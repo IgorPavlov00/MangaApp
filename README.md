@@ -10,11 +10,11 @@ Technologies Used:
 
 ● Spring Boot: Backend framework supporting server-side logic and integrations, facilitating seamless communication with the Jikan API and enhancing platform functionality.
 
-![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/ec7c113c-4a5e-4789-a5a2-a75ffb3b3a8e)
+![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/1c82e657-5611-4b21-8eda-2510575759ee)
 
 
 
-![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/8a8a34c3-8c6a-41d4-ad40-136fe533a418)
+![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/9346af4d-4922-46c5-a2a1-67d9d44c03c7)
 
 
-![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/78115eed-9d20-4e6e-99c6-4acd6db3036c)
+![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/0e7dd976-30d2-4b8f-af8d-e0309273c58f)
