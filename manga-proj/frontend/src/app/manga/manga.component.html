@@ -1,0 +1,49 @@
+
+<app-navbarmanga></app-navbarmanga>
+
+
+<div class="split" >
+
+
+
+    <div class="slider" >
+    <ul>
+      <li>
+        <div *ngFor="let manga of mangaList; let i = index;" [hidden]="currentIndex !== i"   >
+
+          <div class="darken">
+            <img src="{{manga.imageUrl}}" alt=""/>
+          </div>
+          <div class="slider-text">{{manga.title}}<button class="btn-hover slider-button" (click)="handleButtonClick(manga.id)" style="text-decoration: none;color: white">Read more</button></div>
+          <div class="slider-about">{{manga.description}}</div>
+        </div>
+      </li>
+    </ul>
+    <button (click)="prevSlide()" class="prev-button">&#10094;</button>
+    <button (click)="nextSlide()" class="next-button">&#10095;</button>
+
+  </div>
+
+
+</div>
+
+
+<app-topmanga></app-topmanga>
+<app-banner>
+</app-banner>
+<app-categories></app-categories>
+
+<app-footer></app-footer>
+
+
+
+
+
+
+
+
+
+
+
+
+

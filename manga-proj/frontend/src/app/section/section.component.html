@@ -1,0 +1,141 @@
+<app-navbarmanga></app-navbarmanga>
+
+<div class="anime-details spad">
+  <div class="container" *ngIf="manga">
+    <div class="anime__details__content">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="anime__details__pic ">
+            <img style="border-radius: 10px; height: 330px;width: 234px;" src="{{ manga.data.images.jpg.image_url }}">
+            <div class="comment"><i class="fa fa-comments"></i>{{reviews.length}}</div>
+            <div class="view"><i class="fa fa-eye"></i>{{ manga.data.scored_by }}</div>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="anime__details__text">
+            <div class="anime__details__title">
+              <h3>{{ manga.data.title }}</h3>
+              <span>{{ manga.data.title_japanese }}</span>
+            </div>
+            <div class="anime__details__rating">
+              <div class="rating">
+                <app-star [rating]="manga.data.score"></app-star>
+              </div>
+              <span>{{ manga.data.score }} score</span>
+            </div>
+            <p>{{ manga.data.synopsis }}</p>
+            <div class="anime__details__widget">
+              <div class="row justify-content-left">
+                <div class="col-lg-6 col-md-6">
+                  <!-- Manga details list -->
+                  <ul class="genres-list">
+                    <li><span style="font-family: Khand">Genres:</span></li>
+                    <li>
+                      <ng-container *ngIf="manga.data.genres.length > 0">
+                        <ng-container *ngFor="let genre of manga.data.genres.slice(0,3)">
+                          <span class="tag tag-sm d-inline-block text-center">{{ genre.name }}</span>
+                        </ng-container>
+                      </ng-container>
+                    </li>
+                  </ul>
+
+                    <ul>
+                      <li><span style="font-family: Khand">Chapters:</span> {{manga.data.chapters}}</li>
+
+                    </ul>
+
+                </div>
+
+
+              </div>
+            </div>
+            <div class="anime__details__btn">
+              <a href="#" class="follow-btn slider-button"><i class="fa fa-heart-o"></i> Add to your list</a>
+              <a href="#" class="follow-btn slider-button"><span>Watch Now</span> </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-lg-8 col-md-8">
+          <div class="anime__details__review">
+            <div class="section-title">
+              <h5>Reviews</h5>
+            </div>
+            <div *ngFor="let review of reviews; let i= index" class="anime__review__item">
+              <div class="anime__review__item__pic">
+                <img src="{{ review.user.images.jpg.image_url }}" alt="">
+              </div>
+              <div class="anime__review__item__text">
+                <h6>{{ review.user.username }} - <span>{{ review.date }}</span>  - <span>{{ review.tags }}</span> </h6>
+                <app-star [rating]="review.score"></app-star>
+                <p class="review" [class.expanded]="expandedReviewIndex === i">{{ review.review }}</p>
+                <a style="text-decoration: none;color: white;font-family: Khand" href="#" (click)="toggleReviewExpansion($event, i)">
+                  Read {{ expandedReviewIndex === i ? 'less' : 'more' }}
+                </a>
+
+
+              </div>
+            </div>
+<!--            -->
+          </div>
+          <div class="anime__details__form">
+            <div class="section-title">
+              <h5>Your Comment</h5>
+            </div>
+            <form action="#">
+              <textarea placeholder="Your Comment"></textarea>
+              <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <div class="section-title">
+            <h5>you also might like...</h5>
+          </div>
+
+          <div class="anime__details__sidebar recommendations-container" *ngFor="let rec of recommendations.slice(0,15)">
+
+            <div class="product__sidebar__view__item recommendation-item">
+              <img *ngIf="rec.entry.images?.jpg?.image_url" [src]="rec.entry.images.jpg.image_url">
+              <div class="overlay2">
+                <h5 style="margin-right: 10px;"><a href="/sec/{{ rec.entry.mal_id }}">{{ rec.entry.title }}</a></h5>
+
+              </div>
+              <div class="view"><i class="fa fa-star"></i>{{ rec.votes }}</div>
+            </div>
+
+          </div>
+
+            <div class="product__sidebar__comment">
+              <div class="section-title">
+                <h5>Characters</h5>
+              </div>
+              <div class="product__sidebar__comment__item">
+                <div class="product__sidebar__comment__item__pic" *ngFor="let character of characterManga.data.characters">
+                  <div class="character-item">
+                    <img class="character-image" [src]="character.character.images.jpg.image_url" alt="{{ character.character.name }}">
+                    <div class="overlay">
+                      <div class="overlay-content">
+                        <h5><a style="text-decoration: none;color: white" href="/char/{{ character.character.mal_id }}">{{ character.character.name }}</a></h5>
+                        <span><i class="fa fa-eye"></i>{{ character.role }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+<app-footer></app-footer>

@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Khand:wght@500&display=swap');
+
+body{
+  background-color: #212529;
+
+}
+h1 {
+  font-size: 4rem;
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: Impact;
+}
+
+.button {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  height: 2.5rem;
+  padding-top: 1.3rem;
+  width: 15rem;
+  text-align: center;
+  color: #fff;
+  border: #fff solid 0.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateX(-50%);
+  padding-bottom:50px;
+
+}
+
+.split.left .button:hover {
+  background-color: rgba(92, 92, 92, 0.3);
+  border-color: rgba(92, 92, 92, 0.3);
+}
+
+.split.right .button:hover {
+  background-color: rgba(161, 11, 11, 0.3);
+  border-color: rgba(161, 11, 11, 0.3);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #212529;
+}
+
+.split {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  background: #212529;
+}
+
+.split.left {
+  left: 0;
+  background: url("src/assets/img/manga.jpg") center center no-repeat;
+  background-size: cover;
+}
+
+.split.left:before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: rgba(43, 43, 43, 0.2);
+}
+
+.split.right {
+  right: 0;
+  background: url("src/assets/img/anime.jpg") center center no-repeat;
+  background-size: cover;
+}
+
+.split.right:before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: rgba(223, 39, 39, 0.2);
+
+}
+
+.split.left,
+.split.right,
+.split.right:before,
+.split.left:before {
+  transition: 1000ms all ease-in-out;
+}
+
+.hover-left .left {
+  width: 75%;
+}
+
+.hover-left .right {
+  width: 25%;
+}
+
+.hover-left .right:before {
+  z-index: 2;
+}
+
+.hover-right .right {
+  width: 75%;
+}
+
+.hover-right .left {
+  width: 25%;
+}
+
+.hover-right .left:before {
+  z-index: 2;
+}
+
+@media (max-width: 800px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .button {
+    width: 12rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .button {
+    top: 70%;
+  }
+}

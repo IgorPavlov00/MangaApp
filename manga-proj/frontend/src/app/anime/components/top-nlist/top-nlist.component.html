@@ -1,0 +1,13 @@
+<div class="top-anime">
+  <h2>{{ listTitle }}</h2>
+  <div class="button-container">
+    <button [disabled]="visibleIndex==0" (click)="showPrevious()"><</button>
+    <button [disabled]="visibleIndex==topAnime.length-6" (click)="showNext()">></button>
+  </div>
+  <div class="card-container">
+    <div *ngFor="let anime of topAnime" class="card" [style.transform]="'translateX(' + translateX + 'px)'">
+      <img [src]="anime.image" alt="Anime Image"/>
+      <h3>{{ anime.title }}</h3>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="section-title">
+  <h5>Most Popular manga</h5>
+</div>
+<div id="menu">
+  <div id="nav">
+    <div id="prev" (click)="scrollCards('left')">
+      <i class="fa-solid fa-chevron-left"></i>
+    </div>
+    <div id="next" (click)="scrollCards('right')">
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+  </div>
+  <ul id="cards" #cardsList>
+    <li class="list" *ngFor="let manga of mangas.slice(3) | paginate: {id:'mal_id', itemsPerPage:count, currentPage:p, totalItems:maxCount}">
+      <div class="image-container">
+        <a routerLink="/sec/{{manga.mal_id}}">
+        <img [src]="manga.images.jpg.image_url" class="image">
+        </a>
+
+      </div>
+      <app-star [rating]="manga.score"></app-star>
+      <p style="color:white;">{{manga.title }}</p>
+    </li>
+  </ul>
+</div>
+
+<app-more></app-more>

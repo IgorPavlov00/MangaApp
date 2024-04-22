@@ -1,0 +1,24 @@
+<!-- register.component.html -->
+
+<div>
+  <h2>Register</h2>
+  <form (ngSubmit)="registerUser()">
+    <div>
+      <label >First Name</label>
+      <input [(ngModel)]="user.firstName" name="firstName" type="text" required />
+    </div>
+    <div>
+      <label >Last Name</label>
+      <input [(ngModel)]="user.lastName" name="lastName" type="text" required />
+    </div>
+    <div>
+      <label >Email</label>
+      <input [(ngModel)]="user.emailId" name="emailId" type="email" required />
+    </div>
+    <div>
+      <label >Password</label>
+      <input [(ngModel)]="user.password" name="password" type="password" required />
+    </div>
+    <button type="submit">Register</button>
+  </form>
+</div>

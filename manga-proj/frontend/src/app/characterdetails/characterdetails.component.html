@@ -1,0 +1,80 @@
+<app-navbarmanga></app-navbarmanga>
+
+<div class="anime-details spad">
+  <div class="container" *ngIf="character">
+    <div class="anime__details__content">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="anime__details__pic ">
+            <img style="border-radius: 10px;" *ngIf="character.images?.jpg?.image_url" [src]="character.images.jpg.image_url" alt="{{ character.name }}">
+<!--            <div class="comment"><i class="fa fa-comments"></i>{{reviews.length}}</div>-->
+<!--            <div class="view"><i class="fa fa-eye"></i>{{ manga.data.scored_by }}</div>-->
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="anime__details__text">
+            <div class="anime__details__title">
+              <h3>{{ character.name }}</h3>
+              <h2 style="color: white">{{ character.name_kanji }}</h2>
+
+            </div>
+            <div class="anime__details__rating">
+              <div class="rating">
+<!--                <app-star [rating]="manga.data.score"></app-star>-->
+              </div>
+<!--              <span>{{ manga.data.score }} score</span>-->
+            </div>
+            <p>{{ character.about }}</p>
+
+
+            <div class="anime__details__widget">
+              <div class="row justify-content-left">
+                <div class="col-lg-6 col-md-6">
+                  <!-- Manga details list -->
+<!--                  <h3>Voice Actors:</h3>-->
+                  <ul>
+<!--                    <li *ngFor="let voice of character.voices">-->
+<!--                      {{ voice.language }}: {{ voice.person.name }}-->
+<!--                      <img *ngIf="voice.person.images?.jpg?.image_url" [src]="voice.person.images.jpg.image_url" alt="{{ voice.person.name }}">-->
+<!--                    </li>-->
+                  </ul>
+
+
+                  <ul>
+<!--                    <ul style="color: white">-->
+<!--                      <h2 style="color: white">Abilities:</h2>-->
+<!--                      <ul>-->
+<!--                        <li *ngFor="let ability of character.abilities">{{ ability }}</li>-->
+<!--                      </ul>-->
+<!--                      <h2 style="color: white">Powers:</h2>-->
+<!--                      <ul>-->
+<!--                        <li *ngFor="let power of character.nicknames">{{ power }}</li>-->
+<!--                      </ul>-->
+<!--                    </ul>-->
+
+                  </ul>
+
+                </div>
+
+
+              </div>
+            </div>
+            <div class="anime__details__btn">
+              <a href="#" class="follow-btn slider-button"><i class="fa fa-heart-o"></i> Add to you list</a>
+              <a href="#" class="follow-btn slider-button"><span>Watch Now</span> </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <app-footer></app-footer>
+

@@ -1,0 +1,9 @@
+<div class="pagination">
+  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+    <i class="fa fa-chevron-left"></i> <!-- Arrow icon for previous page -->
+  </button>
+  <span>Page {{currentPage}} of {{calculateTotalPages()}}</span>
+  <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === calculateTotalPages()">
+    <i class="fa fa-chevron-right"></i> <!-- Arrow icon for next page -->
+  </button>
+</div>

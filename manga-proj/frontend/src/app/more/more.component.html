@@ -1,0 +1,55 @@
+<div class="product__sidebar__comment">
+  <div class="section-title">
+    <h5>Most popular light novels</h5>
+  </div>
+  <div class="product__sidebar__comment__container">
+    <!-- First grid -->
+    <div class="grid">
+      <div class="product__sidebar__comment__item" *ngFor="let manga of mangas.slice(0, 4)">
+        <div class="product__sidebar__comment__item__pic">
+          <img [src]="manga.images.jpg.image_url" alt="">
+        </div>
+        <div class="product__sidebar__comment__item__text">
+          <ul>
+            <li>Active</li>
+            <li>{{manga.type}}</li>
+          </ul>
+          <h5><a style="text-decoration: none;color: white" href="/sec/{{ manga.mal_id }}">{{ manga.title }}</a></h5>
+          <span><i class="fa fa-eye"></i> {{ manga.scored_by }} Views</span>
+        </div>
+      </div>
+    </div>
+    <!-- Second grid -->
+    <div class="grid">
+      <div class="product__sidebar__comment__item" *ngFor="let manga of mangas.slice(4, 8)">
+        <div class="product__sidebar__comment__item__pic">
+          <img [src]="manga.images.jpg.image_url" alt="">
+        </div>
+        <div class="product__sidebar__comment__item__text">
+          <ul>
+            <li>Active</li>
+            <li>{{ manga.type }}</li>
+          </ul>
+          <h5><a style="text-decoration: none;color: white" href="/sec/{{ manga.mal_id }}">{{ manga.title }}</a></h5>
+          <span><i class="fa fa-eye"></i> {{ manga.scored_by }} Views</span>
+        </div>
+      </div>
+    </div>
+    <!-- Third grid -->
+    <div class="grid">
+      <div class="product__sidebar__comment__item" *ngFor="let manga of mangas.slice(8, 12)">
+        <div class="product__sidebar__comment__item__pic">
+          <img [src]="manga.images.jpg.image_url" alt="">
+        </div>
+        <div class="product__sidebar__comment__item__text">
+          <ul>
+            <li>Active</li>
+            <li>{{manga.type}}</li>
+          </ul>
+          <h5><a style="text-decoration: none;color: white" href="/sec/{{ manga.mal_id }}">{{ manga.title }}</a></h5>
+          <span><i class="fa fa-eye"></i> {{ manga.scored_by }} Views</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

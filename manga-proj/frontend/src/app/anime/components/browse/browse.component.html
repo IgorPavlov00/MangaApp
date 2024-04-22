@@ -1,0 +1,23 @@
+<div class="root">
+  <div class="filter-sort">
+    <div class="filter-chips">
+      <span class="chip" *ngFor="let filter of filters">{{ filter }}</span>
+    </div>
+    <div class="sort-chips">
+      <span class="chip" *ngFor="let sort of sorts">{{ sort }}</span>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <div *ngFor="let anime of data" class="grid-item">
+      <img [src]="anime.image" alt="Anime Image"/>
+      <h3>{{ anime.title }}</h3>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1"><</button>
+    <button *ngFor="let page of getPageRange()" (click)="goToPage(page)" [class.active]="currentPage === page">{{ page }}</button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages.length">></button>
+  </div>
+</div>

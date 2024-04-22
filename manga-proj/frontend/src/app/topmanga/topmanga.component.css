@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Khand:wght@500&display=swap');
+
+body{
+  background: #111111;
+}
+.list {
+  width: 200px; /* Set a fixed width for all cards */
+  height: 300px; /* Set a fixed height for all cards */
+  display: inline-block;
+  text-align: center;
+  border-radius: 5%;
+  position: relative;
+  margin: 7rem 2rem 0 2rem;
+  cursor: pointer;
+  /* Hide overflow text */
+}
+
+.list p {
+  color:black;
+  margin-top:5px;
+  white-space: nowrap; /* Prevent wrapping */
+  font-family: Khand;
+  /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+
+.image-container {
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: .3s ease;
+  border-radius: 5px;
+}
+
+.image:hover {
+  transform: scale(1.04);
+}
+
+.section-title {
+
+  margin-left:16%;
+}
+
+.section-title h4,
+.section-title h5 {
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 21px;
+  text-transform: uppercase;
+  padding-left: 20px;
+  position: relative;
+  font-family: "Khand", sans-serif;
+}
+
+.section-title h4:after,
+.section-title h5:after {
+  position: absolute;
+  left: 5px;
+  top: -6px;
+  height: 32px;
+  width: 4px;
+  background: #e53637;
+  content: "";
+}
+
+#menu {
+  position: relative;
+  width: 90%;
+  height: 26rem;
+  top: 0.2rem;
+
+  margin: 0 7rem 0 5rem;
+  border-radius: 5rem;
+}
+#cards {
+  height:100%;
+  width: 82%;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  list-style: none;
+  padding: 0;
+  position: relative;
+  left: 10%;
+  bottom: 100px;
+}
+
+.list p{
+  width: 300px hidden;
+  overflow: hidden;
+  white-space: nowrap; /* Don't forget this one */
+  text-overflow: ellipsis;
+}
+#prev {
+  display: inline-block;
+  position: absolute;
+  left: 5%;
+  cursor: pointer;
+  font-size: 60px;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+}
+#next {
+  display: inline-block;
+  position: absolute;
+  right: 5%;
+  cursor: pointer;
+  font-size: 60px;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 20px;
+
+}
+#prev,
+#next{
+  margin-top:170px;
+
+  color: #aaaaaa;
+}
+@media (max-width: 1026px) {
+  #menu {
+    width: 95%;
+    height: 22rem;
+    top: 0.5rem;
+    margin: 0 1% 0 2%;
+  }
+  .list{
+    width: 17rem;
+    height: 17rem;
+    background: #e5e5e5;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5%;
+    position: relative;
+    overflow: visible;
+    margin: 6rem 1rem 0 1rem;
+  }
+  #prev,
+  #next{
+    margin-top: 7.5rem;
+  }
+}

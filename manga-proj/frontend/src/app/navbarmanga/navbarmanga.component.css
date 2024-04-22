@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Khand:wght@500&display=swap');
+
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+
+  clear: both;
+
+}
+
+a {
+  display: inline-block;
+  color: #333;
+  text-decoration: none;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 1em;
+  margin-top: 5px;
+  width: auto;
+  background-image:url("src/assets/img/manga-logo.png") ;
+}
+
+nav {
+  background-color: #051c2d;
+
+  box-shadow: none; /* Remove the box shadow */
+  height: 60px;
+  line-height: 80px;
+  position: fixed; /* Position it absolutely */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9998;
+  transition: all 0.5s;
+
+}
+
+nav.scrollUp {
+  transform: translateY(-80px);
+}
+
+nav ul.navbar-menu {
+  margin: -10px;
+  padding: 0;
+  display: inline-block;
+  float: right;
+  font-family: "Poppins", sans-serif;
+}
+
+nav ul.navbar-menu li {
+  display: inline-block;
+  margin: -50px 20px;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 30px;
+}
+
+nav ul.navbar-menu li a {
+  color: white;
+  font-size: 18px;
+  font-family: 'Khand', sans-serif;
+
+
+}
+.navbar-menu li .login-button {
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
+  font-size: 16px;
+
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+  height: 40px;
+  line-height: 45px; /* Center text vertically */
+  text-align: center;
+  border: 1px solid transparent; /* Set initial border */
+  border-radius: 10px;
+  background-size: 300% 100%;
+
+  transition: all .4s ease-in-out;
+}
+
+.navbar-menu li .login-button:hover {
+  background-position: 20% 0;
+  border-color: transparent; /* Change border color on hover */
+  background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+  box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
+
+.navbar-menu li .login-button:focus {
+  outline: none;
+}
+
+.navbar-menu li .login-button.slider-button {
+  background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+  box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+  font-family: Khand;
+}
+
+nav ul.navbar-menu li a::after {
+  content: '';
+  position: absolute;
+  bottom: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background-color: white;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+
+
+
+
+
+
+
+

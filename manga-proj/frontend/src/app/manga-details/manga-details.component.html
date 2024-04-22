@@ -1,0 +1,77 @@
+<app-navbarmanga></app-navbarmanga>
+
+<div class="container" *ngIf="manga">
+
+
+  <div class="header">
+    <h1 class="main-heading">{{ manga.data.title }}</h1>
+    <app-star [rating]="manga.data.score"></app-star>
+    <span class="tag">Manga</span>
+    <span class="tag"> Score: {{ manga.data.score }}</span>
+    <ng-container *ngIf="manga.data.genres.length > 0">
+  <span class="tag" *ngFor="let genre of manga.data.genres; let last = last">
+    {{ genre.name }}
+    <ng-container *ngIf="!last"> </ng-container>
+  </span>
+    </ng-container>
+
+  </div> <!-- END header -->
+
+  <div class="overlay-header"></div>
+
+  <div class="body">
+    <img src="{{ manga.data.images.jpg.image_url }}" alt="Manga Cover" class="body-image" />
+
+    <div class="u-clearfix"></div>
+    <div class="body-info">
+      <p>Chapters: {{ manga.data.chapters ? manga.data.chapters : (manga.data.volumes ? +manga.data.volumes * 30 : 'Unknown') }}</p>
+      <p>
+        {{ manga.data.synopsis }}
+      </p>
+
+      <!-- Display Characters -->
+
+    </div>
+  </div>
+</div>
+
+
+<div class="container2">
+<!--  <h2>Main Characters</h2>-->
+  <div class="character-list">
+
+    <div *ngFor="let character of characterManga.data.characters" class="character-info">
+      <img [src]="character.character.images.jpg.image_url" alt="{{ character.character.name }}" class="character-image">
+      <div class="character-details">
+        <h3>{{ character.character.name }}</h3>
+<!--        <p>Role: {{ character.role }}</p>-->
+<!--        <a [href]="character.character.url" target="_blank">More Info</a>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--<div class="container" *ngIf="characterManga && characterManga.data">-->
+<!--  <h2>Character Manga</h2>-->
+<!--  <ul>-->
+<!--    <li *ngFor="let manga of characterManga.data">-->
+<!--      <h3>{{ manga.character.name }}</h3>-->
+<!--      <img [src]="manga.character.images.jpg.image_url" alt="Character Image" class="character-image">-->
+<!--      <p>Role: {{ manga.character.role }}</p>-->
+<!--      <p>Character URL: <a href="{{ manga.character.url }}">{{ manga.character.url }}</a></p>-->
+<!--      &lt;!&ndash; You can add more details here as needed &ndash;&gt;-->
+<!--    </li>-->
+<!--  </ul>-->
+<!--</div>-->
+
+
+
+
+
+
+
+
+

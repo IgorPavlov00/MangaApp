@@ -1,0 +1,15 @@
+.footer {
+  background-color: #333;
+  color: #fff;
+  height: 200px;
+  font-style: italic;
+  font-size: 10pt;
+  text-align: center;
+  position: relative;
+}
+
+.footer p {
+  position: absolute;
+  left: 40%;
+  bottom: 40%;
+}

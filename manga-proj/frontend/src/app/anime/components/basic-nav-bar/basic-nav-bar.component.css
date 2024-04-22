@@ -1,0 +1,75 @@
+
+nav {
+  background-color: #333;
+  color: #fff;
+  height: 75px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Cabin Sketch', cursive;
+  font-size: 24pt;
+}
+
+.right {
+  float: right;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+li {
+  margin: 0 10px;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  padding: 10px 10px;
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
+  display: block;
+}
+
+a:hover:not(.logo) {
+  color: rgb(223, 39, 39);
+}
+
+a:before, a:after
+{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background:  rgba(223, 39, 39, 0.8);
+  content: "";
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+a:before
+{
+  top: 3px;
+  transform: translateY(10px);
+}
+
+a:after
+{
+  bottom: 3px;
+  transform: translateY(-10px);
+}
+
+a:hover:before, a:hover:after
+{
+  opacity: 1;
+  transform: translateY(0px);
+}
