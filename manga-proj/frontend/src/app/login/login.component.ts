@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Korisnik} from "../korisnik";
 import {LocalService} from "../local.service";
 import {UserService} from "../user.service";
+import {ToastrService} from "ngx-toastr";
 
 
 
@@ -25,7 +26,8 @@ export class LoginComponent {
 
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private toast:ToastrService
 
   ) {}
 
@@ -39,18 +41,22 @@ export class LoginComponent {
 
 
   registerUser() {
+    if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.password) {
+      this.toast.error('Please fill in all the fields', 'Error');
+      return;
+    }
+
+
     this.userService.registerUser(this.user).subscribe(
       response => {
-        console.log('Registration successful', response);
-        this.router.navigate(['registration-success', this.user.email]);
+        this.toast.success('Check your email at:'+this.user.email, 'Successful registration!');
       },
       error => {
         console.error('Registration failed', error);
-        // Handle registration error
+        this.toast.error("Registration failed", "Error");
       }
     );
   }
-
 
   ngOnInit(): void {
     this.container = document.getElementById('container')!;

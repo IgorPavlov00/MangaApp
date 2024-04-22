@@ -31,6 +31,7 @@ import {PaginateComponent} from './paginate/paginate.component';
 import { FooterComponent } from './footer/footer.component';
 import { CharacterdetailsComponent } from './characterdetails/characterdetails.component';
 import { MoreComponent } from './more/more.component';
+import {ToastrModule} from "ngx-toastr";
 
 
 
@@ -75,6 +76,7 @@ import { MoreComponent } from './more/more.component';
       IgxCarouselModule,
       IgxSliderModule,
       MatSliderModule,
+      ToastrModule.forRoot(),
 
 
 
