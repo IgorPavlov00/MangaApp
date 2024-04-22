@@ -1,4 +1,4 @@
-
+# Anime and manga finder
 Search and Filter Functionality: Effortlessly search through a vast database of Manga titles and apply filters to discover content tailored to individual preferences.
 Personalized Recommendations: Utilizing advanced algorithms, MangaExplorer suggests new Manga titles based on user preferences and browsing history, ensuring personalized recommendations for every user.
 
