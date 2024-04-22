@@ -1,4 +1,3 @@
-![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/5bb71800-373b-4c98-b0e2-1da8ed5c2059)# Anime and manga finder
 
 Search and Filter Functionality: Effortlessly search through a vast database of Manga titles and apply filters to discover content tailored to individual preferences.
 Personalized Recommendations: Utilizing advanced algorithms, MangaExplorer suggests new Manga titles based on user preferences and browsing history, ensuring personalized recommendations for every user.
@@ -18,4 +17,4 @@ Technologies Used:
 ![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/8a8a34c3-8c6a-41d4-ad40-136fe533a418)
 
 
-![image](https://github.com/tstojanovic8232/tim27-sbnz2023/assets/103071674/2d3d6ca1-c7d5-4c48-9eab-3567d5b2cc57)
+![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/78115eed-9d20-4e6e-99c6-4acd6db3036c)
