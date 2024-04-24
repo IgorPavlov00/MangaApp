@@ -18,6 +18,7 @@ import {SectionComponent} from "./section/section.component";
 import {FooterComponent} from "./footer/footer.component";
 import {CharacterdetailsComponent} from "./characterdetails/characterdetails.component";
 import {ComicComponent} from "./comic/comic.component";
+import {MangaGenresComponent} from "./manga-genres/manga-genres.component";
 
 
 
@@ -39,6 +40,8 @@ const routes: Routes = [
   {
     path: 'manga', component: MangaComponent
   },
+
+  { path: 'manga-genres/:genre', component: MangaGenresComponent },
 
   {
     path: 'login', component: LoginComponent

@@ -32,6 +32,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CharacterdetailsComponent } from './characterdetails/characterdetails.component';
 import { MoreComponent } from './more/more.component';
 import {ToastrModule} from "ngx-toastr";
+import { MangaGenresComponent } from './manga-genres/manga-genres.component';
 
 
 
@@ -62,7 +63,9 @@ import {ToastrModule} from "ngx-toastr";
     PaginateComponent,
     FooterComponent,
     CharacterdetailsComponent,
-    MoreComponent
+    MoreComponent,
+    MangaGenresComponent,
+
 
   ],
     imports: [

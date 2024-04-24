@@ -230,19 +230,19 @@ export class MangaService {
   apiUrl:string="https://api.jikan.moe/v4/manga";
   character:string="https://api.jikan.moe/v4/characters";
   mostpopular:string="https://api.jikan.moe/v4/manga?order_by=popularity";
-  action:string="https://api.jikan.moe/v4/manga?genres=1&limit=25";
-  advanture:string="https://api.jikan.moe/v4/manga?genres=2&limit=25";
-  shojo:string="https://api.jikan.moe/v4/manga?genres=25";
-  fantasy:string="https://api.jikan.moe/v4/manga?genres=10";
-  romance:string="https://api.jikan.moe/v4/manga?genres=22";
+  action:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=1&limit=25";
+  advanture:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=2&limit=25";
+  shojo:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=25";
+  fantasy:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=10";
+  romance:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=22";
   comedy:string="https://api.jikan.moe/v4/manga?genres=4";
-  shounen:string="https://api.jikan.moe/v4/manga?genres=27";
-  seinen:string="https://api.jikan.moe/v4/manga?genres=41";
+  shounen:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=27";
+  seinen:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=41";
   supernatural:string="https://api.jikan.moe/v4/manga?genres=37";
   mystery:string="https://api.jikan.moe/v4/manga?genres=7";
-  horror:string="https://api.jikan.moe/v4/manga?genres=14";
-  sport:string="https://api.jikan.moe/v4/manga?genres=30";
-  mecha:string="https://api.jikan.moe/v4/manga?genres=18";
+  horror:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=14";
+  sport:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=30";
+  mecha:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=18";
   military:string="https://api.jikan.moe/v4/manga?genres=38";
   psychological:string="https://api.jikan.moe/v4/manga?genres=40";
   private characters = 'https://api.jikan.moe/v4/manga';
@@ -273,6 +273,7 @@ export class MangaService {
       })
     );
   }
+
 
   getMangaData(): Observable<ListResponseModel<Manga>> {
     const totalPages = 3;
@@ -334,121 +335,42 @@ export class MangaService {
     return this.httpclient.get<ListResponseModel<Manga>>(url);
   }
 
+  getMangByGenre(genre: string, page: number, limit: number): Observable<ListResponseModel<Manga>> {
+    const offset = (page - 1) * limit;
+    switch (genre.toLowerCase()) {
+      case 'action':
+        // return this.getActionMangas(page, limit);
+        const url1 = `${this.action}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url1);
+      case 'mecha':
+        const url2 = `${this.mecha}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url2);
+      case 'sport':
+        const url3 = `${this.sport}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url3);
+      case 'fantasy':
+        const url4 = `${this.fantasy}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url4);
+      case 'romance':
+        const url5 = `${this.romance}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url5);
+      case 'seinen':
+        const url6 = `${this.seinen}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url6);
+      case 'shounen':
+        const url7 = `${this.shounen}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url7);
+      case 'horror':
+        const url8 = `${this.horror}&page=${page}`;
+        return this.httpclient.get<ListResponseModel<Manga>>(url8);
 
-
-  getActionMangas(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.action);
-  }
-  getMecha(): Observable<ListResponseModel<Manga>> {
-    if (this.mechaCache$.observed) {
-      // Return the cached data if available
-      return this.mechaCache$.asObservable();
-    } else {
-      // Fetch data from the API and cache it
-      return this.httpclient.get<ListResponseModel<Manga>>(this.mecha).pipe(
-        shareReplay(1),
-        tap((response) => {
-          this.mechaCache$.next(response);
-        })
-      );
+      default:
+        throw new Error(`Invalid genre: ${genre}`);
     }
-  }
-  getSport(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
 
-    return this.httpclient.get<ListResponseModel<Manga>>(this.sport);
   }
-  getPsychological(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
 
-    return this.httpclient.get<ListResponseModel<Manga>>(this.psychological);
-  }
-  getMilitary(): Observable<ListResponseModel<Manga>> {
 
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.military);
-  }
-  getHorror(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.horror);
-  }
-  getMystery(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.mystery);
-  }
-  getSupernatural(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.supernatural);
-  }
-  getSeinen(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.seinen);
-  }
-  getShounen(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.shounen);
-  }
-  getAdvanture(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.advanture);
-  }
-  getShojo(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.shojo);
-  }
-  getFantasy(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.fantasy);
-  }
-  getRomance(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.romance);
-  }
-  getComedy(): Observable<ListResponseModel<Manga>> {
-    // const params = new HttpParams()
-    //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
-    //   .set('order_by', 'asc'); // Set the 'order_by' parameter to 'asc' for ascending order
-
-    return this.httpclient.get<ListResponseModel<Manga>>(this.comedy);
-  }
   getMostPopularMangas():Observable<ListResponseModel<Manga>>{
     // const params = new HttpParams()
     //   .set('genres', '30') // Set the 'genres' parameter to '30' for sports manga
@@ -457,24 +379,11 @@ export class MangaService {
     return this.httpclient.get<ListResponseModel<Manga>>(this.mostpopular);
   }
 
-  getMostPopularMangasWithHighScore(): Observable<Manga[]> {
-    // Define the parameters for the HTTP request
-    const params = new HttpParams().set('score', '9'); // Filter manga with a score higher than 9
-
-    // Make the HTTP request with the defined parameters
-    return this.httpclient.get<Manga[]>(this.mostpopular, { params });
-  }
-
 
   getManga(id:number):Observable<ResponseModel>{
     const url = `${this.apiUrl}/${id}`;
     console.log(url);
     return this.httpclient.get<ResponseModel>(url).pipe();
-  }
-
-  getMangasByGenre(genre: string, page: number): Observable<ResponseModel> {
-    const url = `${this.apiUrl}/mangas/genre/${genre}?page=${page}`;
-    return this.httpclient.get<ResponseModel>(url);
   }
 
 
