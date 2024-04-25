@@ -3,6 +3,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import {Manga, MangaService, ResponseModel} from "../manga.service";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-manga',
@@ -12,6 +14,9 @@ import {Location} from "@angular/common";
 })
 export class SectionComponent {
 
+  mangaId: string | undefined;
+
+  userReview: any = { comment: '', rating: 0 }; // Initialize an empty user review object
 
   manga: ResponseModel | undefined;
   reviews: any[] = [];
@@ -22,7 +27,11 @@ export class SectionComponent {
   characterId!: number ;
   mangaResults: any[] | undefined;
   characterManga: any = { data: { characters: [] } };
-  constructor(private animeService: MangaService, private route: ActivatedRoute, private location: Location) {
+  constructor(private animeService: MangaService,
+              private route: ActivatedRoute,
+              private location: Location,
+              private http: HttpClient,
+              private userService: UserService) {
 
   }
 
@@ -43,6 +52,9 @@ export class SectionComponent {
       console.error('Error fetching manga recommendations:', error);
     });
     this.getCharacterManga(this.route.snapshot.params['id'])
+
+
+
   }
 
   getAnime(): void {
@@ -88,6 +100,8 @@ export class SectionComponent {
     event.preventDefault(); // Prevent default navigation behavior
     this.expandedReviewIndex = this.expandedReviewIndex === index ? null : index;
   }
+
+
 
 
 

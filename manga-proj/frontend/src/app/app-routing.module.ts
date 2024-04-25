@@ -11,7 +11,6 @@ import {BrowseComponent} from "./anime/components/browse/browse.component";
 import {AboutComponent} from "./anime/components/about/about.component";
 import {MangaDetailsComponent} from "./manga-details/manga-details.component";
 import {BrowseMangaComponent} from "./browse-manga/browse-manga.component";
-import {SignupComponent} from "./signup/signup.component";
 import {LoginComponent} from "./login/login.component";
 import {ProfilComponent} from "./profil/profil.component";
 import {SectionComponent} from "./section/section.component";
@@ -19,6 +18,7 @@ import {FooterComponent} from "./footer/footer.component";
 import {CharacterdetailsComponent} from "./characterdetails/characterdetails.component";
 import {ComicComponent} from "./comic/comic.component";
 import {MangaGenresComponent} from "./manga-genres/manga-genres.component";
+import {RegistrationSuccessComponent} from "./registration-success/registration-success.component";
 
 
 
@@ -48,12 +48,13 @@ const routes: Routes = [
   },
   {
     path:'browsemanga',component:BrowseMangaComponent
+  },
+  {
+    path:'confirm',component:RegistrationSuccessComponent
   }
   ,{ path: 'manga/:id', component: MangaDetailsComponent},
 
-  {
-    path: 'signup', component: SignupComponent
-  },
+
   {
     path: 'comic', component: ComicComponent
   },

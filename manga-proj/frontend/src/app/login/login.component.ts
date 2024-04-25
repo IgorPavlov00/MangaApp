@@ -41,15 +41,15 @@ export class LoginComponent {
 
 
   registerUser() {
-    if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.password) {
+    if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.password || this.user.password.length < 8) {
       this.toast.error('Please fill in all the fields', 'Error');
       return;
     }
 
-
+    // All fields are filled, proceed with registratio
+    this.toast.success('Check your email at:'+this.user.email, 'Successful registration!');
     this.userService.registerUser(this.user).subscribe(
       response => {
-        this.toast.success('Check your email at:'+this.user.email, 'Successful registration!');
       },
       error => {
         console.error('Registration failed', error);

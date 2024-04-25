@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { MangaComponent } from "./manga/manga.component";
-import {SignupComponent} from './signup/signup.component';
 
 import { AnimeModule } from './anime/anime.module';
 import {Router, RouterModule} from "@angular/router";
@@ -18,7 +17,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {LoginComponent} from "./login/login.component";
 import { ProfilComponent } from './profil/profil.component';
 import { StarComponent } from './star/star.component';
-import { RegisterComponent } from './register/register.component';
 import { RegistrationSuccessComponent } from './registration-success/registration-success.component';
 import {IgxCarouselModule, IgxSliderModule} from "igniteui-angular";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,7 +44,6 @@ import { MangaGenresComponent } from './manga-genres/manga-genres.component';
     AppComponent,
     LandingPageComponent,
     MangaComponent,
-    SignupComponent,
     SectionComponent,
     MangaDetailsComponent,
     NavbarmangaComponent,
@@ -54,7 +51,7 @@ import { MangaGenresComponent } from './manga-genres/manga-genres.component';
     LoginComponent,
     ProfilComponent,
     StarComponent,
-    RegisterComponent,
+
     RegistrationSuccessComponent,
     BannerComponent,
     ComicComponent,

@@ -1,7 +1,9 @@
 // registration-success.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastrService} from "ngx-toastr";
+import {LocalService} from "../local.service";
 
 @Component({
   selector: 'app-registration-success',
@@ -9,11 +11,22 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./registration-success.component.css']
 })
 export class RegistrationSuccessComponent implements OnInit {
-   emailId: string | null | undefined;
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private verifyService: LocalService,
+    private  toast:ToastrService) {
 
-  constructor(private route: ActivatedRoute) {}
+    this.route.queryParamMap.subscribe((queryParams) => {
+      const token = queryParams.get('token');
+      verifyService.verify(token).subscribe();
+      console.log(verifyService.verify(token))
+    });
+
+
+  }
 
   ngOnInit(): void {
-    this.emailId = this.route.snapshot.paramMap.get('emailId');
+    this.toast.info('You have succesfully verified your account!')
   }
 }
