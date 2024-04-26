@@ -53,6 +53,7 @@ html {
 
 .header-container {
   position: relative;
+  background-image: url(src/assets/img/cover.jpg);
 }
 
 .header-image {
@@ -153,7 +154,7 @@ a.addbtn:hover, a.addbtn:focus {
 
 
 .body {
-  background-color: #eee;
+  background-color: transparent;
   color: #555;
   margin-top: -50px;
   padding: 0 15px 15px;
@@ -877,7 +878,7 @@ body {
 
 .app-content {
   padding: 16px;
-  background-color: #0dcccc;
+  background-color: transparent;
   height: 100%;
   flex: 1;
   max-height: 100%;
@@ -895,7 +896,7 @@ body {
   padding: 0 4px;
 }
 .app-content-headerText {
-  color: var(--table-border);
+  color: white;
   font-size: 24px;
   line-height: 32px;
   margin: 0;
@@ -914,7 +915,7 @@ body {
   font-family: Khand;
 }
 .app-content-headerButton:hover {
-  background-color: #0e141f;
+  background-color: #1d3e6e;
 }
 .app-content-actions {
   display: flex;
@@ -1067,7 +1068,7 @@ body {
 }
 .filter-menu select:focus, .filter-menu select.active {
   outline: none;
-  color: var(--action-color);
+  color: white;
   border-color: var(--action-color);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232869ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 }
@@ -1123,7 +1124,7 @@ body {
 .tableView .product-cell {
   flex: 1;
   padding: 8px 16px;
-  color: black;
+  color: white;
   font-size: 14px;
   display: flex;
   align-items: center;

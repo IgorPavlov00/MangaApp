@@ -8,8 +8,10 @@ import {Observable} from "rxjs";
 export class LocalService {
 
   private url: string;
+  private baseUrl = 'http://localhost:8084'; // Update with your API base URL
 
   constructor(private http: HttpClient) {
+
     this.url = "http://localhost:8084/auth/activate";
   }
 
@@ -24,14 +26,17 @@ export class LocalService {
 
   }
 
-  getUser(token: string | null): Observable<object> {
-    const httpOptions = {
-      headers: new HttpHeaders(
-        {'Content-Type': 'application/json'}
-      )
-    };
-    return this.http.get('http://localhost:8084/getUser?token=' + token, httpOptions);
+  getUserByEmail(email: string): Observable<any> {
+    // Retrieve token from local storage
+    const token = localStorage.getItem('token');
 
+    // Add token to request headers
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    // Make authenticated GET request
+    return this.http.get(`${this.baseUrl}/auth/email/${email}`, { headers });
   }
 
 }

@@ -64,16 +64,19 @@ public class AuthenticationService {
         String newToken = generateAndSaveActivationToken(user);
 
         String confirmationLink = "http://localhost:4200/confirm?token=" + newToken;
-        String imageUrl = "https://d226aj4ao1t61q.cloudfront.net/ai2shais_blog_confirmationmail.png";
+        String imageUrl = "https://i.ibb.co/DPJMkMg/mangaupload2.jpg";
 
         String htmlContent = "<html><body>" +
-                "<div style='text-align: center; padding: 20px; border: 1px solid #ddd; border-radius: 5px;background-color:bisque;'>" +
-                "<h1 >Hello  " + user.getFirstName() + " " + user.getLastName() + "!</h1>" +
-                "<p>Click the button below to verify your account:</p>" +
+                "<div style='text-align: center; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-image: url(" + imageUrl + "); background-size: cover; font-family: \"Khand\", sans-serif;'>" +
+                "<h1 style='color: white;'>Hello  " + user.getFirstName() + " " + user.getLastName() + "!</h1>" +
+                "<p style='color: white;'>Click the button below to verify your account:</p>" +
                 "<a href='" + confirmationLink + "' style='display: inline-block; padding: 10px 20px; background-color: #4caf50; color: #ffffff; text-decoration: none; border-radius: 5px;'>Confirm Email</a>" +
                 "<br><br>" +
-                "<img src='" + imageUrl + "' alt='Cart Image' style='max-width: 100%; max-height:60%; border-radius:5px;'><br>" +
                 "</div></body></html>";
+
+
+
+
 
         // Send the email with HTML content
         emailSenderService.sendHtmlEmail(user.getEmail(), "Activate Your Account", htmlContent);

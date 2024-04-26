@@ -59,7 +59,7 @@ const routes: Routes = [
     path: 'comic', component: ComicComponent
   },
   {
-    path: 'profil', component: ProfilComponent
+    path: 'profil/:email', component: ProfilComponent
   },
   {
     path: 'anime', component: BasicAnimePagesComponent, children:

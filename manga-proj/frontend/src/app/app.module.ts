@@ -65,26 +65,22 @@ import { MangaGenresComponent } from './manga-genres/manga-genres.component';
 
 
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        RouterModule,
-        HttpClientModule,
-      NgxPaginationModule,
-      BrowserAnimationsModule,
-        FormsModule,
-      IgxCarouselModule,
-      IgxSliderModule,
-      MatSliderModule,
-      ToastrModule.forRoot(),
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    RouterModule,
+    HttpClientModule,
+    NgxPaginationModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    IgxCarouselModule,
+    IgxSliderModule,
+    MatSliderModule,
+    ToastrModule.forRoot(),
+    ReactiveFormsModule,
 
 
-
-
-
-
-
-    ],
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

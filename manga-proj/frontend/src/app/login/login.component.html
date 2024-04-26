@@ -14,10 +14,10 @@
     </div>
 
     <div class="form-container sign-in">
-      <form >
+      <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
         <h1>Sign In</h1>
-        <input type="email" placeholder="Email" name="email" required>
-        <input type="password" placeholder="Password"  name="password" required>
+        <input type="email" formControlName="email" placeholder="Email" name="email" required>
+        <input type="password" formControlName="password" placeholder="Password"  name="password" required>
         <a href="#">Forget Your Password?</a>
         <button type="submit">Sign In</button>
       </form>
