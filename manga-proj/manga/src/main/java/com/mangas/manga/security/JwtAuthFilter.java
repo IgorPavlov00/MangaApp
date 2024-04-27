@@ -33,7 +33,7 @@ public class JwtAuthFilter  extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/auth")) {
+        if (request.getServletPath().contains("/auth/add/manga")) {
             filterChain.doFilter(request, response);
             return;
         }

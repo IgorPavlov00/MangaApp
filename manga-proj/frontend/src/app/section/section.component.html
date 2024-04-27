@@ -1,6 +1,6 @@
 <app-navbarmanga></app-navbarmanga>
 
-<div class="anime-details spad">
+<div class="anime-details spad" *ngIf="isLoggedIn">
   <div class="container" *ngIf="manga">
     <div class="anime__details__content">
       <div class="row">
@@ -50,7 +50,10 @@
               </div>
             </div>
             <div class="anime__details__btn">
-              <a href="#" class="follow-btn slider-button"><i class="fa fa-heart-o"></i> Add to your list</a>
+              <button (click)="addToUserList()" class="follow-btn slider-button">
+                <i class="fa fa-heart-o"></i> Add to your list
+              </button>
+
               <a href="#" class="follow-btn slider-button"><span>Watch Now</span> </a>
 
             </div>

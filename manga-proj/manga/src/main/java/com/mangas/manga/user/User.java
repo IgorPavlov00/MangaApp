@@ -1,5 +1,7 @@
 package com.mangas.manga.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mangas.manga.manga.Manga;
 import com.mangas.manga.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
@@ -37,6 +39,17 @@ public class User implements UserDetails, Principal {
     private String password;
     private boolean accountLocked;
     private boolean enabled;
+
+
+    @JoinTable(name = "user_manga",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "manga_id"))
+    @ManyToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Manga> mangaList;
+
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;

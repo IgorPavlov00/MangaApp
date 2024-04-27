@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ export class LocalService {
 
   private url: string;
   private baseUrl = 'http://localhost:8084'; // Update with your API base URL
+  private tokenKey = 'token';
 
   constructor(private http: HttpClient) {
 
@@ -37,6 +38,46 @@ export class LocalService {
 
     // Make authenticated GET request
     return this.http.get(`${this.baseUrl}/auth/email/${email}`, { headers });
+  }
+
+
+
+
+  // Get JWT token from local storage
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  isLoggedIn(): boolean {
+    // Check if the token exists in local storage
+    const token = localStorage.getItem('token');
+    console.log(token)
+    return !!token; // Returns true if token exists, false otherwise
+  }
+
+
+  // Example of attaching token to HTTP headers
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  // Example of making authenticated HTTP request
+  getUserProfile(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.baseUrl}/user`, { headers }).pipe(
+      catchError(error => {
+        // Handle authentication error (e.g., token expired)
+        if (error.status === 403) {
+          // Clear token and log out user
+          localStorage.removeItem(this.tokenKey);
+          // Redirect user to login page or display appropriate message
+        }
+        return throwError(error);
+      })
+    );
   }
 
 }

@@ -5,6 +5,8 @@ import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../user.service";
+import {LocalService} from "../local.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-manga',
@@ -17,7 +19,7 @@ export class SectionComponent {
   mangaId: string | undefined;
 
   userReview: any = { comment: '', rating: 0 }; // Initialize an empty user review object
-
+  isLoggedIn: boolean = false;
   manga: ResponseModel | undefined;
   reviews: any[] = [];
   recommendations: any[] = [];
@@ -31,7 +33,10 @@ export class SectionComponent {
               private route: ActivatedRoute,
               private location: Location,
               private http: HttpClient,
-              private userService: UserService) {
+              private userService: UserService,
+              private auth: LocalService,
+              private toast: ToastrService) {
+
 
   }
 
@@ -44,6 +49,7 @@ export class SectionComponent {
     }, error => {
       console.error('Error fetching manga reviews:', error);
     });
+    this.isLoggedIn = this.auth.isLoggedIn();
 
     this.animeService.getMangaReccommendations(this.route.snapshot.params['id']).subscribe(recommendations => {
       this.recommendations = recommendations.data;
@@ -73,6 +79,50 @@ export class SectionComponent {
     );
     this.location.replaceState(this.location.path());
   }
+
+  addToUserList(): void {
+    // Check if this.manga is defined and this.manga.data is defined and not null
+    if (this.manga && this.manga.data !== undefined && this.manga.data !== null) {
+      const mangaId = this.manga.data.mal_id;
+      if (mangaId) {
+        this.userService.getLoggedInUser().subscribe(
+          (user: any) => {
+            const userId = user.id;
+            const requestPayload = {
+              userId: userId,
+              mangaId: mangaId,
+             // Add a null check for this.manga.data
+            };
+            this.toast.info("Manga added to user list");
+            console.log('Request payload:', requestPayload);
+            this.userService.addMangaToUser(requestPayload).subscribe(
+              (response: any) => {
+                console.log('Manga added to user list:', response);
+                // Optionally, you can display a success message or update the UI
+              },
+              (error: any) => {
+                console.error('Error adding manga to user list:', error);
+                // Handle error
+              }
+            );
+          },
+          (error: any) => {
+            console.error('Error getting logged-in user:', error);
+            // Handle error
+          }
+        );
+      }
+    } else {
+      console.error('Manga details are not available or null.');
+    }
+  }
+
+
+
+
+
+
+
 
   getCharacterManga(malId: number): void {
 

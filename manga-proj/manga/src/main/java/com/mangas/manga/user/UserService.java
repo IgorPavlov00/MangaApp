@@ -13,10 +13,14 @@ public class UserService {
     private UserRepository userRepository;
 
     public User getUserById(Long id) {
-        return userRepository.findById(Math.toIntExact(id)).orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 }

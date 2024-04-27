@@ -25,11 +25,18 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/auth/**",
+            "/users/**",
+            "/add/manga/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        http.cors(Customizer.withDefaults())
                .csrf(AbstractHttpConfigurer::disable)
-               .authorizeHttpRequests(req-> req.requestMatchers("/auth/**"
+               .authorizeHttpRequests(req-> req.requestMatchers(AUTH_WHITELIST
 
                ).permitAll()
                        .anyRequest().authenticated()
