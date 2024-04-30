@@ -31,7 +31,7 @@
     "ngx-bootstrap": "^12.0.0",
     "ngx-pagination": "^6.0.3",
     "owl.carousel": "^2.3.4",
-    "primeng": "^17.13.0",
+    "primeng": "^11.4.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "vanilla-tilt": "^1.8.0",

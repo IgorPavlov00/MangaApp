@@ -19,6 +19,7 @@ import {CharacterdetailsComponent} from "./characterdetails/characterdetails.com
 import {ComicComponent} from "./comic/comic.component";
 import {MangaGenresComponent} from "./manga-genres/manga-genres.component";
 import {RegistrationSuccessComponent} from "./registration-success/registration-success.component";
+import {FilterComponent} from "./filter/filter.component";
 
 
 
@@ -54,7 +55,7 @@ const routes: Routes = [
   }
   ,{ path: 'manga/:id', component: MangaDetailsComponent},
 
-
+  { path: 'filter', component: FilterComponent},
   {
     path: 'comic', component: ComicComponent
   },
@@ -78,7 +79,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    scrollPositionRestoration: 'enabled' //scroll to the top
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

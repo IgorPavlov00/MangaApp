@@ -1,6 +1,9 @@
-<app-navbarmanga></app-navbarmanga>
+<p #target></p>
+<app-navbarmanga>
 
-<div class="anime-details spad" *ngIf="isLoggedIn">
+</app-navbarmanga>
+
+<div class="anime-details spad" *ngIf="isLoggedIn" >
   <div class="container" *ngIf="manga">
     <div class="anime__details__content">
       <div class="row">
@@ -23,7 +26,11 @@
               </div>
               <span>{{ manga.data.score }} score</span>
             </div>
-            <p>{{ manga.data.synopsis }}</p>
+            <p class="synopsis" *ngIf="!expandedSynopsis">{{ manga.data.synopsis | slice:0:800}}</p>
+            <p class="synopsis" *ngIf="expandedSynopsis">{{ manga.data.synopsis }}</p>
+            <a style="text-decoration: none;color: white;font-family: Khand" href="#" (click)="toggleSynopsisExpansion($event)">
+              {{ expandedSynopsis ? 'Read less' : 'Read more' }}
+            </a>
             <div class="anime__details__widget">
               <div class="row justify-content-left">
                 <div class="col-lg-6 col-md-6">
@@ -32,16 +39,43 @@
                     <li><span style="font-family: Khand">Genres:</span></li>
                     <li>
                       <ng-container *ngIf="manga.data.genres.length > 0">
-                        <ng-container *ngFor="let genre of manga.data.genres.slice(0,3)">
+                        <ng-container *ngFor="let genre of manga.data.genres">
                           <span class="tag tag-sm d-inline-block text-center">{{ genre.name }}</span>
                         </ng-container>
                       </ng-container>
                     </li>
                   </ul>
 
-                    <ul>
-                      <li><span style="font-family: Khand">Chapters:</span> {{manga.data.chapters}}</li>
+                    <ul class="genres-list"><li><span style="font-family: Khand">Characters:</span></li>
+<!--                      <li><span style="font-family: Khand">Chapters:</span> {{manga.data.chapters}}</li>-->
+<!--                       <li><span style="font-family: Khand">Characters:</span><div class="container2">-->
+<!--                         &lt;!&ndash;  <h2>Main Characters</h2>&ndash;&gt;-->
+<!--                         <div class="character-list">-->
 
+<!--                           <div *ngFor="let character of characterManga.data.characters" class="character-info">-->
+<!--                             <img [src]="character.character.images.jpg.image_url" alt="{{ character.character.name }}" class="character-image">-->
+<!--                             <div class="character-details">-->
+<!--                               <h3>{{ character.character.name }}</h3>-->
+<!--                               &lt;!&ndash;        <p>Role: {{ character.role }}</p>&ndash;&gt;-->
+<!--                               &lt;!&ndash;        <a [href]="character.character.url" target="_blank">More Info</a>&ndash;&gt;-->
+<!--                             </div>-->
+<!--                           </div>-->
+<!--                         </div>-->
+<!--                       </div>-->
+               <li>
+                 <div class="image-slider">
+                   <div >
+                     <div  class="image-container2" style="width:800px;">
+                       <ng-container *ngFor="let character of characterManga.data.characters" >
+                         <a style="text-decoration: none;color: white" href="/char/{{ character.character.mal_id }}"><img  [src]="character.character.images.jpg.image_url" alt="{{ character.character.name }}" style="width:90px; height:90px; margin-right:10px; border-radius:10px;"  /></a>
+
+
+
+                       </ng-container>
+                     </div>
+                   </div>
+                 </div>
+               </li>
                     </ul>
 
                 </div>
@@ -115,24 +149,24 @@
 
           </div>
 
-            <div class="product__sidebar__comment">
-              <div class="section-title">
-                <h5>Characters</h5>
-              </div>
-              <div class="product__sidebar__comment__item">
-                <div class="product__sidebar__comment__item__pic" *ngFor="let character of characterManga.data.characters">
-                  <div class="character-item">
-                    <img class="character-image" [src]="character.character.images.jpg.image_url" alt="{{ character.character.name }}">
-                    <div class="overlay">
-                      <div class="overlay-content">
-                        <h5><a style="text-decoration: none;color: white" href="/char/{{ character.character.mal_id }}">{{ character.character.name }}</a></h5>
-                        <span><i class="fa fa-eye"></i>{{ character.role }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+<!--            <div class="product__sidebar__comment">-->
+<!--              <div class="section-title">-->
+<!--                <h5>Characters</h5>-->
+<!--              </div>-->
+<!--              <div class="product__sidebar__comment__item">-->
+<!--                <div class="product__sidebar__comment__item__pic" *ngFor="let character of characterManga.data.characters">-->
+<!--                  <div class="character-item">-->
+<!--                    <img class="character-image" [src]="character.character.images.jpg.image_url" alt="{{ character.character.name }}">-->
+<!--                    <div class="overlay">-->
+<!--                      <div class="overlay-content">-->
+<!--                        <h5><a style="text-decoration: none;color: white" href="/char/{{ character.character.mal_id }}">{{ character.character.name }}</a></h5>-->
+<!--                        <span><i class="fa fa-eye"></i>{{ character.role }}</span>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
 
 
 
@@ -143,4 +177,4 @@
 
 
 
-<app-footer></app-footer>
+<app-footer (click)="scroll(target)"></app-footer>

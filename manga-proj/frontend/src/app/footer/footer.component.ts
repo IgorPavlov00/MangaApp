@@ -12,6 +12,14 @@ export class FooterComponent {
 
   constructor() { }
 
+  ngAfterViewInit() {
+    // Hack: Scrolls to top of Page after page view initialized
+    let top = document.getElementById('top');
+    if (top !== null) {
+      top.scrollIntoView();
+      top = null;
+    }
+  }
   scrollToTop() {
     console.log('Scroll to top button clicked');
     window.scrollTo({ top: 0, behavior: 'smooth' });

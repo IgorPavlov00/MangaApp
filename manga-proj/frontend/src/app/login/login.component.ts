@@ -61,8 +61,11 @@ export class LoginComponent {
 
     this.userService.loginUser(email, password).subscribe(
       (response) => {
+        this.isLoggedIn = true; // Set isLoggedIn to true upon successful login
+
         // Assuming the response contains a token upon successful login
         const token = response.token;
+        localStorage.setItem( 'email', email);
         // You can store the token in local storage or session storage for future requests
         localStorage.setItem('token', token);
         console.log(token)
@@ -75,6 +78,8 @@ export class LoginComponent {
 
       },
       (error) => {
+        this.isLoggedIn = false;
+
         console.error('Login failed', error);
         this.toast.error('Login failed. Please check your credentials.', 'Error');
       }

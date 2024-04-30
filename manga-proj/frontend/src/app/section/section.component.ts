@@ -45,11 +45,13 @@ export class SectionComponent {
     this.location.replaceState(this.location.path());
     this.animeService.getMangaReviews(this.route.snapshot.params['id']).subscribe(reviews => {
       this.reviews = reviews.data;
+      localStorage.setItem('reviews', JSON.stringify(this.reviews));
       console.log(this.reviews);
     }, error => {
       console.error('Error fetching manga reviews:', error);
     });
     this.isLoggedIn = this.auth.isLoggedIn();
+    this.getCharacterManga(this.route.snapshot.params['id'])
 
     this.animeService.getMangaReccommendations(this.route.snapshot.params['id']).subscribe(recommendations => {
       this.recommendations = recommendations.data;
@@ -57,12 +59,15 @@ export class SectionComponent {
     }, error => {
       console.error('Error fetching manga recommendations:', error);
     });
-    this.getCharacterManga(this.route.snapshot.params['id'])
 
-
+    this.sortCharactersByPopularity();
 
   }
-
+  sortCharactersByPopularity() {
+    this.characterManga.data.characters.sort((a: { character: { popularity: number; }; }, b: { character: { popularity: number; }; }) => {
+      return b.character.popularity - a.character.popularity;
+    });
+  }
   getAnime(): void {
     this.location.replaceState(this.location.path());
     const id = +this.route.snapshot.params['id'];
@@ -125,32 +130,48 @@ export class SectionComponent {
 
 
   getCharacterManga(malId: number): void {
-
     this.animeService.getCharacterManga(malId).subscribe(
       (data: any) => {
         const mainCharacters = data.data.filter((character: any) => character);
-        const firstSixCharacters = mainCharacters.slice(0, 7);
-        this.characterManga = { data: { characters: firstSixCharacters } };
+
+        // Sort characters by popularity
+        mainCharacters.sort((a: any, b: any) => b.character.popularity - a.character.popularity);
+
+        // Select the first seven characters
+        const firstSevenCharacters = mainCharacters.slice(0, 7);
+
+        this.characterManga = { data: { characters: firstSevenCharacters } };
         console.log('Main Characters:', this.characterManga);
+
+        // Update the URL without refreshing the page
         this.location.replaceState(this.location.path());
-        // Now that characterManga data is fetched, you can use it here or anywhere else in your component
+
+        // Store characterManga data in localStorage
+        localStorage.setItem('characterManga', JSON.stringify(this.characterManga));
       },
       error => {
         console.error('Error fetching character manga:', error);
         this.characterManga = { data: { characters: [] } };
       }
     );
-    this.location.replaceState(this.location.path());
   }
+
   isExpanded: boolean = false;
   expandedReviewIndex: number | null = null; // Track the index of the expanded review
+  expandedSynopsis: boolean = false;
 
+  toggleSynopsisExpansion(event: MouseEvent) {
+    event.preventDefault();
+    this.expandedSynopsis = !this.expandedSynopsis;
+  }
 
   toggleReviewExpansion(event: MouseEvent, index: number): void {
     event.preventDefault(); // Prevent default navigation behavior
     this.expandedReviewIndex = this.expandedReviewIndex === index ? null : index;
   }
-
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({behavior: 'smooth'});
+  }
 
 
 

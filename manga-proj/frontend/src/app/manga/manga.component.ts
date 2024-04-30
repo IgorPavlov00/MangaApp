@@ -2,6 +2,7 @@ import {Component, ElementRef, EventEmitter, Output, Renderer2, ViewChild, ViewE
 import {Manga, MangaService} from "../manga.service";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import { ScrollTopModule } from 'primeng/scrolltop';
 
 import {map, mergeMap, timer} from "rxjs";
 import {animate, state, style, transition, trigger} from "@angular/animations";
@@ -69,7 +70,9 @@ export class MangaComponent {
 
   }
   @Output() scrollToTopEvent: EventEmitter<any> = new EventEmitter();
-
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({behavior: 'smooth'});
+  }
   scrollToTop() {
     console.log('Scroll to top button clicked');
     window.scrollTo({ top: 0, behavior: 'smooth' });

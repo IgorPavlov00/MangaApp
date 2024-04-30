@@ -2,7 +2,7 @@
 <app-navbarmanga></app-navbarmanga>
 
 
-<div class="split" >
+<div class="split" #target >
 
 
 
@@ -32,8 +32,12 @@
 <app-banner>
 </app-banner>
 <app-categories></app-categories>
+<p-scrollTop target="parent" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up">scrool</p-scrollTop>
 
-<app-footer></app-footer>
+<app-footer (click)="scroll(target)">
+
+
+</app-footer>
 
 
 

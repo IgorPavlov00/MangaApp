@@ -46,6 +46,7 @@ export class MangaDetailsComponent {
         const firstSixCharacters = mainCharacters.slice(0, 7);
         // Assign first 6 characters to characterManga
         this.characterManga = { data: { characters: firstSixCharacters } };
+        localStorage.setItem('characterManga', JSON.stringify(this.characterManga));
         console.log('Main Characters:', this.characterManga);
       },
       error => {

@@ -397,5 +397,20 @@ export class MangaService {
 
     return this.httpclient.get<ListResponseModel<Manga>>(this.light_novel);
   }
+
+  searchMangas(name: string, genre: string): Observable<ListResponseModel<Manga>> {
+    // Build query parameters for search
+    let params = new HttpParams();
+    if (name) {
+      params = params.append('name', name);
+    }
+    if (genre) {
+      params = params.append('genre', genre);
+    }
+
+    // Make API call to search mangas
+    return this.httpclient.get<ListResponseModel<Manga>>(`${this.apiUrl}/mangas/search`, { params });
+  }
 }
+
 

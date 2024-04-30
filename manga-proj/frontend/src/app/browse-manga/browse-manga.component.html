@@ -1,13 +1,23 @@
 <app-navbarmanga></app-navbarmanga>
 
-<div class="product__sidebar__comment">
 
 
 
+<!--<div class="product__sidebar__comment">-->
 
 
+
+<div class="app-content-actions" >
+  <form [formGroup]="searchForm">
+    <input class="search-bar" placeholder="Search..." type="text" formControlName="search" (input)="onFormValueChanges()">
+    <!-- Other form controls for genre, chapter, status, etc. -->
+  </form>
+
+</div>
   <div class="product__sidebar__comment__container">
-    <!-- First grid -->
+
+
+
     <div class="grid">
       <div class="product__sidebar__comment__item" *ngFor="let manga of mangas.slice(0, 6)">
         <div class="product__sidebar__comment__item__pic">
@@ -78,7 +88,7 @@
     </div>
 
   </div>
-</div>
+<!--</div>-->
 
 
 <app-paginate

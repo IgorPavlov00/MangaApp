@@ -693,6 +693,66 @@ a:focus + .review {
   bottom: 10px;
 }
 
+.app-content-actions {
+  display: flex;
+
+  align-items: center;
+  padding: 16px 4px;
+  margin-top:70px;
+  margin-left:100px;
+}
+.app-content-actions-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+@media screen and (max-width: 820px) {
+  .app-content-actions {
+    flex-direction: column;
+  }
+
+}
+
+.search-bar {
+  background-color: var(--app-content-secondary-color);
+  border: 1px solid var(--filter-shadow);
+  /*color: var(--app-content-main-color);*/
+  font-size: 14px;
+  font-family: Khand;
+  line-height: 24px;
+  border-radius: 4px;
+  padding: 0px 10px 0px 32px;
+  height: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-search'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: left 10px center;
+  width: 200px;
+  max-width: 520px;
+  transition: 0.2s;
+  color:white;
+}
+.light .search-bar {
+  /*background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231f1c2e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-search'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");*/
+  color:white;
+}
+.search-bar:placeholder {
+  /*color: var(--app-content-main-color);*/
+  color:white;
+}
+.search-bar:hover {
+  border-color: var(--action-color-hover);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236291fd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-search'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  color:white;
+}
+.search-bar:focus {
+  outline: none;
+  border-color: var(--action-color);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232869ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-search'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  color:white;
+}
+
+
 .product__item__pic .view {
   font-size: 13px;
   color: #ffffff;
@@ -709,8 +769,8 @@ a:focus + .review {
   flex-wrap: wrap;
   justify-content: space-between;
   flex-direction: row;
-  margin-left: 10.5%;
-  margin-top: 5%;
+  margin-left: 9.5%;
+  margin-top: 1%;
 }
 .grid {
   flex: 1;
@@ -883,6 +943,7 @@ a:focus + .review {
 
 .product__sidebar__comment {
   margin-bottom: 35px;
+
 }
 
 .product__sidebar__comment__item {
@@ -2543,6 +2604,24 @@ a:focus + .review {
     padding: 18px 20px 20px;
   }
 }
+
+.search-and-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* Adjust spacing as needed */
+}
+
+.search-and-filter form {
+  display: flex;
+  align-items: center;
+}
+
+.search-and-filter input,
+.search-and-filter select {
+  margin-right: 10px; /* Adjust spacing between elements */
+}
+
 /*/
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors

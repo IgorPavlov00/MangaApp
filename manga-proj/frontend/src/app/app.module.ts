@@ -31,6 +31,8 @@ import { CharacterdetailsComponent } from './characterdetails/characterdetails.c
 import { MoreComponent } from './more/more.component';
 import {ToastrModule} from "ngx-toastr";
 import { MangaGenresComponent } from './manga-genres/manga-genres.component';
+import { FilterComponent } from './filter/filter.component';
+import {ScrollTopModule} from "primeng/scrolltop";
 
 
 
@@ -62,6 +64,7 @@ import { MangaGenresComponent } from './manga-genres/manga-genres.component';
     CharacterdetailsComponent,
     MoreComponent,
     MangaGenresComponent,
+    FilterComponent,
 
 
   ],
@@ -78,6 +81,7 @@ import { MangaGenresComponent } from './manga-genres/manga-genres.component';
     MatSliderModule,
     ToastrModule.forRoot(),
     ReactiveFormsModule,
+    ScrollTopModule
 
 
   ],

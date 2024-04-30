@@ -752,7 +752,6 @@ body {
   max-width: 1280px;
   display: flex;
   overflow: hidden;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   max-width: 2000px;
   margin: 0 auto;
 }
@@ -1095,7 +1094,7 @@ body {
 }
 
 .products-area-wrapper {
-  width: 100%;
+  width: 110%;
   max-height: 100%;
 
   padding: 0 4px;
@@ -1107,7 +1106,7 @@ body {
   border-radius: 4px;
   background-color: var(--app-content-secondary-color);
   position: sticky;
-  width:96%;
+
   top: 0;
 }
 .tableView .products-row {
@@ -1117,7 +1116,7 @@ body {
 }
 .tableView .products-row:hover {
   box-shadow: var(--filter-shadow);
-  background:linear-gradient( to left, #3856e5, #2c93e0);
+  background:linear-gradient( to right, #1b2fa2, #2d6da4);
 }
 .tableView .products-row .cell-more-button {
   display: none;
@@ -1131,10 +1130,61 @@ body {
   align-items: center;
 }
 .tableView .product-cell img {
-  width: 42px;
-  height: 42px;
+  width: 100px;
+  height: 122px;
   border-radius: 6px;
   margin-right: 6px;
+}
+
+.image-slider {
+  width: 90%;
+  overflow: hidden;
+  border-radius:15px
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease;
+  flex-wrap: wrap;
+
+}
+
+.slider {
+  display: flex;
+}
+
+
+
+.character-container {
+  position: relative;
+  display: inline-block;
+}
+
+.character-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.slide {
+  width: 90px;
+  height: 90px;
+  margin-right: 10px;
+  border-radius: 10px;
+  transition: filter 0.3s ease;
+}
+
+.character-container:hover .character-name {
+  opacity: 1;
 }
 @media screen and (max-width: 780px) {
   .tableView .product-cell {
@@ -1273,12 +1323,42 @@ body {
   border-radius: 5px;
 }
 
-.product-text {
-  display: flex;
-  margin-left: 290px;
-  margin-right: 300px;
+.app-content {
+  width: 100%;
 }
 
+.app-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.app-content-headerText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+.products-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+.product-row {
+  width: 15%; /* Five manga per row */
+  padding: 10px;
+}
+.product-text {
+  text-align: center;
+  margin-right:110px;
+  color:white;
+}
+.product-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
 .product-cell {
   flex: 1;
   width:370px;

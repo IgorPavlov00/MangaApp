@@ -7,5 +7,5 @@ import {Component, Input} from '@angular/core';
 })
 export class StarComponent {
   @Input() rating: number = 0;
-  stars: number[] = [ 1,3,5, 7, 9];
+  stars: number[] = [ 1,2,3, 4, 5];
 }

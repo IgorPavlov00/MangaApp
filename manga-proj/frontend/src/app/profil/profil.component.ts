@@ -57,6 +57,7 @@ export class ProfilComponent implements OnInit {
         (data) => {
           this.mangaDetails.push(data);
           console.log( this.mangaDetails);
+          this.saveMangaDetailsToLocal();
         },
         (error) => {
           console.error(`Error fetching manga details for ID ${mangaId}:`, error);
@@ -65,10 +66,19 @@ export class ProfilComponent implements OnInit {
     }
   }
 
+  saveMangaDetailsToLocal() {
+    localStorage.setItem('mangaDetails', JSON.stringify(this.mangaDetails));
+  }
+
 
   handleButtonClick(mangaId:number) {
 
     this.router.navigate(['/sec', mangaId]);
+  }
+  headerImage: string = 'src/assets/img/cover.jpg'; // Default header image
+
+  changeHeaderImage(newImageUrl: string) {
+    this.headerImage = newImageUrl;
   }
 }
 
