@@ -16,7 +16,7 @@ Technologies Used:
 ![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/9346af4d-4922-46c5-a2a1-67d9d44c03c7)
 
 
-![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/15bec58e-af70-49fc-96e4-e89e63c7961a)
+![image](https://github.com/IgorPavlov00/MangaApp/assets/103071674/e68ac732-98a8-4088-89e4-d16529bfe899)
 
 
 
