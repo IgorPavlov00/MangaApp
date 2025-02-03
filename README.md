@@ -32,7 +32,7 @@ A dynamic platform for discovering and exploring anime and manga, powered by rea
 ---
 
 ## 📸 Screenshots  
-| Landing Page | Manga Details | Recommendations |  
+| Landing Page | Favorites | Manga Details |  
 |------------------|---------------|------------------|  
 | ![Search](https://github.com/IgorPavlov00/MangaApp/assets/103071674/1c82e657-5611-4b21-8eda-2510575759ee) | ![Details](https://github.com/IgorPavlov00/MangaApp/assets/103071674/9346af4d-4922-46c5-a2a1-67d9d44c03c7) | ![Recommendations](https://github.com/IgorPavlov00/MangaApp/assets/103071674/e68ac732-98a8-4088-89e4-d16529bfe899) |  
 
