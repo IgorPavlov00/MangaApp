@@ -39,7 +39,7 @@ Explore the live application: [https://anime-manga-finder.netlify.app/manga](htt
 ## 📸 Screenshots  
 | Search Interface | Manga Details | Recommendations |  
 |------------------|---------------|------------------|  
-| ![image](https://github.com/user-attachments/assets/6b0f6bf0-17ab-4ca7-a562-69a80c6c186f)
+| ![image](https://github.com/user-attachments/assets/6b0f6bf0-17ab-4ca7-a562-69a80c6c186f) |
  | ![Details](https://github.com/IgorPavlov00/MangaApp/assets/103071674/9346af4d-4922-46c5-a2a1-67d9d44c03c7) | ![Recommendations](https://github.com/IgorPavlov00/MangaApp/assets/103071674/e68ac732-98a8-4088-89e4-d16529bfe899) |  
 
 ---
