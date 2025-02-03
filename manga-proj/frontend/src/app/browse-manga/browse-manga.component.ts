@@ -42,7 +42,7 @@ export class BrowseMangaComponent {
 
   // This method will be called whenever the form value changes
   onFormValueChanges() {
-    this.search(); // Call the search method whenever the form value changes
+    this.search(); // Call the search meth  od whenever the form value changes
   }
 
   getMostPopularMangas(page: number = 1) {

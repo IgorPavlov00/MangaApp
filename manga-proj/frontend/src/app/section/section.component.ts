@@ -1,7 +1,7 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {Manga, MangaService, ResponseModel} from "../manga.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../user.service";
@@ -14,7 +14,7 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./section.component.css'],
 
 })
-export class SectionComponent {
+export class SectionComponent implements OnInit {
 
   mangaId: string | undefined;
 
@@ -29,13 +29,16 @@ export class SectionComponent {
   characterId!: number ;
   mangaResults: any[] | undefined;
   characterManga: any = { data: { characters: [] } };
+  private pageReloaded: boolean = false;
+  private hasReloaded: boolean = false;
   constructor(private animeService: MangaService,
               private route: ActivatedRoute,
               private location: Location,
               private http: HttpClient,
               private userService: UserService,
               private auth: LocalService,
-              private toast: ToastrService) {
+              private toast: ToastrService,
+              private router: Router) {
 
 
   }
@@ -43,31 +46,42 @@ export class SectionComponent {
   ngOnInit(): void {
     this.getAnime();
     this.location.replaceState(this.location.path());
-    this.animeService.getMangaReviews(this.route.snapshot.params['id']).subscribe(reviews => {
-      this.reviews = reviews.data;
-      localStorage.setItem('reviews', JSON.stringify(this.reviews));
-      console.log(this.reviews);
-    }, error => {
-      console.error('Error fetching manga reviews:', error);
-    });
+    this.getCharacterManga(this.route.snapshot.params['id']);
+    this.animeService.getMangaReviews(this.route.snapshot.params['id']).subscribe(
+      reviews => {
+        this.reviews = reviews.data;
+        sessionStorage.setItem('reviews', JSON.stringify(this.reviews));
+        console.log(this.reviews);
+      },
+      error => {
+        console.error('Error fetching manga reviews:', error);
+      }
+    );
     this.isLoggedIn = this.auth.isLoggedIn();
-    this.getCharacterManga(this.route.snapshot.params['id'])
+    this.getmangaRecommendations(); // Call getMangaRecommendations here
 
+    if (this.hasReloaded) {
+      this.reloadPage();
+      this.hasReloaded = true;
+    }
+  }
+  reloadPage(): void {
+    this.hasReloaded=true;
+    setTimeout(() => {
+      window.location.reload();
+
+    }, 1000); // Adjust the delay if needed
+  }
+
+  getmangaRecommendations() {
     this.animeService.getMangaReccommendations(this.route.snapshot.params['id']).subscribe(recommendations => {
       this.recommendations = recommendations.data;
       console.log(this.recommendations)
     }, error => {
       console.error('Error fetching manga recommendations:', error);
     });
-
-    this.sortCharactersByPopularity();
-
   }
-  sortCharactersByPopularity() {
-    this.characterManga.data.characters.sort((a: { character: { popularity: number; }; }, b: { character: { popularity: number; }; }) => {
-      return b.character.popularity - a.character.popularity;
-    });
-  }
+
   getAnime(): void {
     this.location.replaceState(this.location.path());
     const id = +this.route.snapshot.params['id'];
@@ -76,6 +90,7 @@ export class SectionComponent {
         this.manga = manga;
         this.getCharacterManga(id); // Call getCharacterManga after manga data is fetched
         console.log(this.manga?.data.chapters);
+        console.log(this.manga);
         this.location.replaceState(this.location.path());
       },
       error => {
@@ -152,6 +167,7 @@ export class SectionComponent {
       error => {
         console.error('Error fetching character manga:', error);
         this.characterManga = { data: { characters: [] } };
+        sessionStorage.setItem('characterManga', JSON.stringify(this.characterManga));
       }
     );
   }

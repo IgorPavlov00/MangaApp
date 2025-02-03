@@ -227,7 +227,7 @@ export class MangaService {
 
   private mechaCache$: ReplaySubject<ListResponseModel<Manga>> = new ReplaySubject<ListResponseModel<Manga>>(1);
 
-  apiUrl:string="https://api.jikan.moe/v4/manga";
+  private apiUrl = "/.netlify/functions/proxy/manga";
   character:string="https://api.jikan.moe/v4/characters";
   mostpopular:string="https://api.jikan.moe/v4/manga?order_by=popularity";
   action:string="https://api.jikan.moe/v4/manga?order_by=popularity&genres=1&limit=25";
@@ -252,6 +252,7 @@ export class MangaService {
   mangaData: any[] = [];
   private ListResponesModel: Manga | undefined;
 
+
   constructor(private httpclient:HttpClient) { }
 
   getMangaReviews(mangaId: number): Observable<any> {
@@ -268,11 +269,12 @@ export class MangaService {
     const url = `${this.apiUrl}/${mangaId}/recommendations`;
     return this.httpclient.get<any>(url).pipe(
       catchError(error => {
-        console.error('Error fetching manga reviews:', error);
+        console.error('Error fetching manga recommendations:', error); // Corrected error message
         return throwError(error);
       })
     );
   }
+
 
 
   getMangaData(): Observable<ListResponseModel<Manga>> {
@@ -305,9 +307,14 @@ export class MangaService {
   }
 
   // Method to fetch character data by ID
-  getCharacterManga(characterId: number): Observable<any> {
-    const url = `${this.characters}/${characterId}/characters`;
-    return this.httpclient.get<any>(url);
+  getCharacterManga(malId: number): Observable<any> {
+    const url = `${this.apiUrl}/${malId}/characters`;
+    return this.httpclient.get<any>(url).pipe(
+      catchError(error => {
+        console.error('Error fetching character manga:', error);
+        return throwError(error);
+      })
+    );
   }
 
   getMangas(): Observable<ListResponseModel<Manga>> {
@@ -380,12 +387,15 @@ export class MangaService {
   }
 
 
-  getManga(id:number):Observable<ResponseModel>{
+  getManga(id: number): Observable<ResponseModel> {
     const url = `${this.apiUrl}/${id}`;
-    console.log(url);
-    return this.httpclient.get<ResponseModel>(url).pipe();
+    return this.httpclient.get<ResponseModel>(url).pipe(
+      catchError(error => {
+        console.error('Error fetching manga:', error);
+        return throwError(error);
+      })
+    );
   }
-
 
   getCharacterDetails(characterId: number): Observable<any> {
     const url = `${this.character}/${characterId}/full`;
