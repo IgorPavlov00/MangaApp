@@ -8,6 +8,7 @@ import { Genre, Media, MediaKind, Page, SearchParams, coverUrl, displayTitle } f
 import { Icon } from '../../shared/icon';
 import { MediaCard } from '../../shared/media-card';
 import { Pagination } from '../../shared/pagination';
+import { GENRE_TILES } from '../home/genres';
 import { ORDER_OPTIONS, SCORE_OPTIONS, STATUS_OPTIONS, TYPE_OPTIONS } from './options';
 
 interface Filters {
@@ -140,7 +141,9 @@ export default class Browse {
   }
 
   protected genreName(id: number): string {
-    return this.genres().find((g) => g.mal_id === id)?.name ?? `Genre ${id}`;
+    return (
+      this.genres().find((g) => g.mal_id === id)?.name ?? GENRE_TILES.find((g) => g.id === id)?.name ?? `Genre ${id}`
+    );
   }
 
   protected clearFilters(): void {
