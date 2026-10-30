@@ -17,6 +17,7 @@ const ART = [
   'adventure',
   'comedy',
   'drama',
+  'bleach',
 ];
 
 /** Four columns of artwork; each list is doubled so the scroll loops seamlessly at -50%. */
