@@ -1,0 +1,232 @@
+// Sticky must live on the host: a sticky child can only stick within its parent's box.
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: block;
+}
+
+.bar {
+  background: rgb(12 11 16 / 0.78);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+
+.inner {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.stamp {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  transform: rotate(-6deg);
+  transition: transform 0.2s;
+}
+
+.brand:hover .stamp {
+  transform: rotate(0);
+}
+
+.word {
+  font-size: 1.3rem;
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+
+  a {
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--muted);
+    transition:
+      color 0.15s,
+      background 0.15s;
+
+    &:hover {
+      color: var(--paper);
+    }
+
+    &.active {
+      color: var(--paper);
+      background: var(--ink-3);
+    }
+  }
+}
+
+.search {
+  position: relative;
+  flex: 1;
+  max-width: 340px;
+  margin-left: auto;
+
+  // The icon renders inside its own component, hence ::ng-deep.
+  ::ng-deep svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    width: 17px;
+    height: 17px;
+    transform: translateY(-50%);
+    color: var(--faint);
+    pointer-events: none;
+  }
+
+  .input {
+    min-height: 40px;
+    padding-left: 40px;
+    border-radius: 999px;
+    background: var(--ink-2);
+  }
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.account {
+  position: relative;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--ink-3);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 230px;
+  padding: 8px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--ink-2);
+  box-shadow: var(--shadow);
+  display: grid;
+
+  .who {
+    display: grid;
+    padding: 8px 10px 12px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+
+    span {
+      font-size: 0.8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  a,
+  button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--ink-3);
+    }
+  }
+}
+
+.burger {
+  display: none;
+}
+
+.waking {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px var(--gutter);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgb(255 207 74 / 0.12);
+  color: var(--gold);
+  border-top: 1px solid rgb(255 207 74 / 0.25);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .inner {
+    gap: 12px;
+  }
+
+  .burger {
+    display: inline-flex;
+  }
+
+  .nav {
+    position: absolute;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 12px var(--gutter) 20px;
+    background: var(--ink);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    display: none;
+
+    &.open {
+      display: flex;
+    }
+
+    a {
+      padding: 12px 14px;
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .word {
+    display: none;
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  .signin {
+    padding: 0 12px;
+  }
+}

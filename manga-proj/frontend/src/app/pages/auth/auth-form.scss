@@ -1,0 +1,47 @@
+// Shared by the auth pages.
+form {
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.row a {
+  font-size: 0.82rem;
+}
+
+.alt {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.callout {
+  font-size: 0.9rem;
+}
+
+.done {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+  padding: 22px;
+  border-radius: var(--radius);
+  border: 1px solid rgb(67 211 158 / 0.35);
+  background: rgb(67 211 158 / 0.08);
+
+  ::ng-deep svg {
+    width: 28px;
+    height: 28px;
+    color: var(--ok);
+  }
+}
+
+button[type='submit'] .spinner {
+  width: 16px;
+  height: 16px;
+}

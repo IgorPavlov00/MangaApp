@@ -1,0 +1,132 @@
+<div class="head screentone">
+  <div class="container head-inner">
+    <div class="kinds" role="tablist" aria-label="Catalogue">
+      <a role="tab" routerLink="/manga" [class.on]="kind() === 'manga'" [attr.aria-selected]="kind() === 'manga'" [queryParams]="filters().q ? { q: filters().q } : {}">
+        <app-icon name="book" /> Manga
+      </a>
+      <a role="tab" routerLink="/anime" [class.on]="kind() === 'anime'" [attr.aria-selected]="kind() === 'anime'" [queryParams]="filters().q ? { q: filters().q } : {}">
+        <app-icon name="tv" /> Anime
+      </a>
+    </div>
+    <h1 class="display">
+      @if (filters().q) {
+        “{{ filters().q }}”
+      } @else {
+        Browse {{ kind() }}
+      }
+    </h1>
+
+    <form class="search" role="search" (submit)="submitSearch($event)">
+      <app-icon name="search" />
+      <label class="sr-only" for="browse-search">Search {{ kind() }}</label>
+      <input
+        id="browse-search"
+        class="input"
+        type="search"
+        [placeholder]="'Search ' + kind() + ' by title…'"
+        [value]="term()"
+        (input)="onType($any($event.target).value)"
+        autocomplete="off"
+      />
+    </form>
+
+    <div class="filters">
+      <button class="btn btn-sm" type="button" [class.btn-primary]="showGenres()" (click)="showGenres.set(!showGenres())" [attr.aria-expanded]="showGenres()">
+        <app-icon name="sliders" /> Genres
+        @if (filters().genres.length) {
+          <span class="count">{{ filters().genres.length }}</span>
+        }
+      </button>
+      <label class="sr-only" for="f-type">Format</label>
+      <select id="f-type" class="select sm" (change)="setFilter('type', $any($event.target).value)">
+        <option value="">Any format</option>
+        @for (o of typeOptions(); track o.value) {
+          <option [value]="o.value" [selected]="o.value === filters().type">{{ o.label }}</option>
+        }
+      </select>
+      <label class="sr-only" for="f-status">Status</label>
+      <select id="f-status" class="select sm" (change)="setFilter('status', $any($event.target).value)">
+        <option value="">Any status</option>
+        @for (o of statusOptions(); track o.value) {
+          <option [value]="o.value" [selected]="o.value === filters().status">{{ o.label }}</option>
+        }
+      </select>
+      <label class="sr-only" for="f-score">Minimum score</label>
+      <select id="f-score" class="select sm" (change)="setFilter('min_score', $any($event.target).value)">
+        <option value="">Any score</option>
+        @for (o of scoreOptions; track o.value) {
+          <option [value]="o.value" [selected]="o.value === filters().minScore">Score {{ o.label }}</option>
+        }
+      </select>
+      <label class="sr-only" for="f-order">Sort by</label>
+      <select id="f-order" class="select sm" (change)="setFilter('order_by', $any($event.target).value)">
+        @for (o of orderOptions; track o.value) {
+          <option [value]="o.value" [selected]="o.value === filters().orderBy">{{ o.label }}</option>
+        }
+      </select>
+      @if (activeFilterCount()) {
+        <button class="btn btn-sm btn-ghost" type="button" (click)="clearFilters()"><app-icon name="x" /> Clear</button>
+      }
+    </div>
+
+    @if (showGenres()) {
+      <div class="genre-panel">
+        @for (g of genres(); track g.mal_id) {
+          <button type="button" class="chip" [class.active]="filters().genres.includes(g.mal_id)" (click)="toggleGenre(g.mal_id)">
+            {{ g.name }}
+          </button>
+        } @empty {
+          <span class="muted">Loading genres…</span>
+        }
+      </div>
+    } @else if (filters().genres.length) {
+      <div class="genre-panel">
+        @for (id of filters().genres; track id) {
+          <button type="button" class="chip active" (click)="toggleGenre(id)" [attr.aria-label]="'Remove ' + genreName(id)">
+            {{ genreName(id) }} <app-icon name="x" />
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<div class="container page">
+  <p class="summary muted" aria-live="polite">
+    @if (loading()) {
+      Searching…
+    } @else if (total() !== null) {
+      {{ total() | number }} {{ total() === 1 ? 'title' : 'titles' }} · page {{ filters().page }} of {{ lastPage() | number }}
+    }
+  </p>
+
+  @if (error()) {
+    <p class="callout error">{{ error() }}</p>
+  } @else if (loading()) {
+    <div class="grid-cards">
+      @for (i of placeholders; track i) {
+        <div class="ph">
+          <div class="skeleton cover"></div>
+          <div class="skeleton line"></div>
+          <div class="skeleton line short"></div>
+        </div>
+      }
+    </div>
+  } @else if (results()?.data?.length) {
+    <div class="grid-cards">
+      @for (m of results()!.data; track m.mal_id) {
+        <app-media-card [kind]="kind()" [malId]="m.mal_id" [title]="displayTitle(m)" [image]="coverUrl(m.images, 'normal')" [score]="m.score" [meta]="meta(m)" />
+      }
+    </div>
+    <app-pagination [page]="filters().page" [last]="lastPage()" (pageChange)="goToPage($event)" />
+  } @else {
+    <div class="empty">
+      <span class="glyph" aria-hidden="true">無</span>
+      <h2>Nothing found</h2>
+      <p>Try a different title or loosen the filters.</p>
+      @if (activeFilterCount()) {
+        <button class="btn" type="button" (click)="clearFilters()">Clear filters</button>
+      }
+    </div>
+  }
+</div>

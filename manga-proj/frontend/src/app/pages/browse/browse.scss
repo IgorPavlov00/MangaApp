@@ -1,0 +1,141 @@
+.head {
+  border-bottom: 1px solid var(--line);
+  background:
+    var(--tone),
+    radial-gradient(ellipse at 0 0, rgb(255 90 54 / 0.14), transparent 60%),
+    var(--ink-2);
+}
+
+.head-inner {
+  padding-block: 32px 24px;
+}
+
+.kinds {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--ink);
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--muted);
+
+    ::ng-deep svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &.on {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+  }
+}
+
+h1 {
+  margin-top: 18px;
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+  text-transform: capitalize;
+  overflow-wrap: anywhere;
+}
+
+.search {
+  position: relative;
+  max-width: 640px;
+  margin-top: 20px;
+
+  ::ng-deep svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    width: 19px;
+    height: 19px;
+    transform: translateY(-50%);
+    color: var(--faint);
+    pointer-events: none;
+  }
+
+  .input {
+    min-height: 52px;
+    padding-left: 46px;
+    border-radius: 999px;
+    font-size: 1rem;
+    background: var(--ink);
+  }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+
+  .select.sm {
+    width: auto;
+    min-height: 34px;
+    padding-left: 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: var(--ink-3);
+  }
+
+  .count {
+    display: grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.72rem;
+  }
+}
+
+.genre-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+
+  .chip ::ng-deep svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.summary {
+  min-height: 1.5em;
+  margin-bottom: 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.ph {
+  display: grid;
+  gap: 8px;
+
+  .cover {
+    aspect-ratio: 2 / 3;
+    border-radius: var(--radius);
+  }
+
+  .line {
+    height: 12px;
+  }
+
+  .short {
+    width: 60%;
+  }
+}

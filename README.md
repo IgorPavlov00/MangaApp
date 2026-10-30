@@ -1,55 +1,83 @@
-# 🎌 Anime and Manga Finder  
+# 🎌 AniMan · Anime & Manga Finder
 
-[![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat&logo=angular&logoColor=white)](https://angular.io/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=spring&logoColor=white)](https://spring.io/)
-[![Jikan API](https://img.shields.io/badge/Jikan_API-000000?style=flat&logo=myanimelist&logoColor=white)](https://jikan.moe/)
+[![Angular](https://img.shields.io/badge/Angular_21-DD0031?style=flat&logo=angular&logoColor=white)](https://angular.dev/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot_4-6DB33F?style=flat&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Jikan API](https://img.shields.io/badge/Jikan_API-2E51A2?style=flat&logo=myanimelist&logoColor=white)](https://jikan.moe/)
 
-A dynamic platform for discovering and exploring anime and manga, powered by real-time data from the Jikan API.
+A full-stack app for discovering anime and manga and keeping a personal library of what you read and watch.
+Catalogue data comes live from MyAnimeList through the [Jikan API](https://jikan.moe/).
 
----
-
-## 🌟 Features  
-- **🔍 Advanced Search**: Filter manga by genre, rating, and status  
-- **🎯 Personalized Recommendations**: AI-driven suggestions based on user preferences  
-- **📚 Detailed Information**: Comprehensive manga details including synopsis, ratings, and chapters  
-- **📱 Responsive Design**: Seamless experience across devices  
-- **📊 Real-Time Data**: Up-to-date information from Jikan API  
-- **🌟 Favorites System**: Save and organize your favorite titles  
+**Live demo:** https://anime-manga-finder.netlify.app
 
 ---
 
-## 🚀 Live Demo  
-Explore the live application: [https://anime-manga-finder.netlify.app/manga](https://anime-manga-finder.netlify.app/manga)  
+## 🌟 Features
 
----
+- **🔍 Browse & search**: full-text search with genre, format, status and minimum-score filters, sorting and pagination. Every filter lives in the URL, so results are shareable.
+- **📚 Rich detail pages**: synopsis, stats, characters, related titles, trailers and community recommendations.
+- **📖 Personal library**: save manga and anime with a status (reading, planning, completed, …), your own 1–10 score, chapter/episode progress and favourites.
+- **🎯 Personalised recommendations**: the API ranks titles recommended alongside your favourites, weighted by how much you liked each one.
+- **🔐 Accounts**: sign-up with email confirmation, sign-in, password reset and profile settings, powered by Supabase Auth.
+- **📱 Responsive**: designed for phones up to wide desktops, keyboard-accessible.
 
-## 🛠️ Tech Stack  
-**Frontend**  
-![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat&logo=angular&logoColor=white)  
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)  
+## 🏗️ Architecture
 
-**Backend**  
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=spring&logoColor=white)  
+```
+ Angular 21 (Netlify) ──── Supabase Auth ──── sign-up, email confirmation, sessions, JWTs
+        │       └───────── Jikan API ───────── catalogue data (public, rate-limited, cached client-side)
+        │ Bearer <Supabase access token>
+        ▼
+ Spring Boot 4 API (Render, Docker) ──── Supabase Postgres (library, Flyway migrations)
+        └──────────────────────────────── Jikan API (recommendation seeds, cached)
+```
 
-**API Integration**  
-![Jikan API](https://img.shields.io/badge/Jikan_API-000000?style=flat&logo=myanimelist&logoColor=white)  
+- **Frontend** (`manga-proj/frontend`): standalone components, signals, zoneless change detection, lazy-loaded routes, a throttled and cached Jikan client, and optimistic UI updates.
+- **Backend** (`manga-proj/manga`): a stateless OAuth2 resource server that verifies Supabase JWTs against the project's JWKS (issuer, audience and role checks). It owns the library domain and the recommendation engine. Includes Flyway migrations, Bean Validation, RFC 9457 problem-detail errors, Caffeine caching, OpenAPI docs at `/docs` and health probes.
+- **Database**: Supabase Postgres. Row-level security is enabled on API-owned tables so they aren't exposed through Supabase's auto-generated REST API, and library rows cascade-delete with the auth user.
 
-## 📸 Screenshots  
+### API
 
-| Landing Page      |  Recommendations   |     Manga Details    |
-|-----------------------|------------------------|-------------------------|
-| ![Search Interface](https://github.com/user-attachments/assets/6b0f6bf0-17ab-4ca7-a562-69a80c6c186f) | ![Manga Details](https://github.com/IgorPavlov00/MangaApp/assets/103071674/9346af4d-4922-46c5-a2a1-67d9d44c03c7) | ![Recommendations](https://github.com/IgorPavlov00/MangaApp/assets/103071674/e68ac732-98a8-4088-89e4-d16529bfe899) |
+| Method   | Path                                   | Description                                       |
+| -------- | -------------------------------------- | ------------------------------------------------- |
+| `GET`    | `/api/library?mediaType=&status=`      | The signed-in user's entries                      |
+| `GET`    | `/api/library/{manga\|anime}/{malId}`  | One entry (404 if not saved)                      |
+| `PUT`    | `/api/library/{manga\|anime}/{malId}`  | Create or update an entry                         |
+| `DELETE` | `/api/library/{manga\|anime}/{malId}`  | Remove an entry                                   |
+| `GET`    | `/api/library/stats`                   | Counts per status and average score               |
+| `GET`    | `/api/recommendations?mediaType=`      | Personalised recommendations                      |
+| `GET`    | `/api/me`                              | Profile from the token plus stats                 |
 
-## 🏁 Getting Started  
+Interactive docs: `http://localhost:8084/docs`.
 
-### Prerequisites  
-- Node.js 16+  
-- Angular CLI  
-- Java 17+  
-- Maven  
+## 🏁 Running locally
 
-### Installation  
-1. Clone the repository:  
-   ```bash  
-   git clone https://github.com/IgorPavlov00/MangaApp.git  
-   cd MangaApp  
+**Prerequisites:** Node 22.12+, Java 17+, Maven, Docker (for local Postgres), and a free [Supabase](https://supabase.com) project for auth.
+
+```bash
+# 1. Database
+cd manga-proj/manga
+docker compose up -d
+
+# 2. API: copy .env.example to .env and set SUPABASE_URL (the DATABASE_* defaults match docker compose)
+./mvnw spring-boot:run          # http://localhost:8084
+
+# 3. Frontend: copy .env.example to .env and set SUPABASE_URL + SUPABASE_PUBLISHABLE_KEY
+cd ../frontend
+npm install
+npm start                       # http://localhost:4200
+```
+
+Tests: `./mvnw test` (Postgres repository tests run via Testcontainers when Docker is available) and `npm test`.
+
+## 🚀 Deployment
+
+1. **Supabase**: create a project. Under *Authentication → URL Configuration*, set the Site URL to your Netlify URL and add `http://localhost:4200/**` as a redirect URL. Paste the templates from `supabase/email-templates/` into *Authentication → Emails*. For real users, configure custom SMTP (the built-in sender is heavily rate-limited).
+2. **API on Render**: *New → Blueprint* and pick this repo (`render.yaml`). Fill in `SUPABASE_URL` and the **Session pooler** connection details (`DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`), since Render needs the IPv4 pooler. Flyway creates the tables on first boot.
+3. **Frontend on Netlify**: `netlify.toml` configures the build. Set `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` and `API_URL` (your Render URL) as environment variables.
+
+> The free Render tier sleeps after inactivity, so the first API call can take up to a minute. The UI shows a "waking up" banner meanwhile.
+
+## 🙏 Credits
+
+Data from [Jikan](https://jikan.moe), the unofficial MyAnimeList API. Not affiliated with MyAnimeList.

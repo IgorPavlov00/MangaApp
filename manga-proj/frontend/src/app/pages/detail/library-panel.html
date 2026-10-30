@@ -1,0 +1,80 @@
+<div class="panel">
+  @if (!auth.user()) {
+    <p class="lead"><app-icon name="bookmark" /> Track this {{ kind() }}</p>
+    <p class="muted small">Save it to your library, rate it and log your progress.</p>
+    <a class="btn btn-primary btn-block" routerLink="/login" [queryParams]="loginLink()">Sign in to save</a>
+  } @else if (loadError()) {
+    <p class="callout error small">{{ loadError() }}</p>
+    <button class="btn btn-sm btn-block" type="button" (click)="load(kind(), media().mal_id)">Try again</button>
+  } @else if (entry() === undefined) {
+    <div class="skeleton" style="height: 44px"></div>
+    <div class="skeleton" style="height: 44px; margin-top: 10px"></div>
+  } @else if (entry() === null) {
+    <button class="btn btn-primary btn-block" type="button" [disabled]="saving()" (click)="add('PLANNING')">
+      <app-icon name="plus" /> Add to library
+    </button>
+    <button class="btn btn-block" type="button" [disabled]="saving()" (click)="add('IN_PROGRESS')">
+      Start {{ kind() === 'manga' ? 'reading' : 'watching' }}
+    </button>
+  } @else {
+    @let e = entry()!;
+    <div class="top">
+      <p class="lead in"><app-icon name="check" /> In your library</p>
+      <button
+        class="fav"
+        type="button"
+        [class.on]="e.favorite"
+        (click)="toggleFavorite()"
+        [attr.aria-pressed]="e.favorite"
+        [attr.aria-label]="e.favorite ? 'Remove from favourites' : 'Add to favourites'"
+      >
+        <app-icon name="heart" [filled]="e.favorite" />
+      </button>
+    </div>
+
+    <div class="field">
+      <label for="lp-status">Status</label>
+      <select id="lp-status" class="select" (change)="setStatus($any($event.target).value)">
+        @for (s of statuses; track s) {
+          <option [value]="s" [selected]="s === e.status">{{ label(s) }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="lp-rating">Your score</label>
+      <select id="lp-rating" class="select" (change)="setRating($any($event.target).value)">
+        <option value="" [selected]="!e.rating">Not rated</option>
+        @for (r of ratings; track r) {
+          <option [value]="r" [selected]="r === e.rating">{{ r }} · {{ ratingLabels[r] }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="lp-progress">Progress</label>
+      <div class="progress">
+        <input
+          id="lp-progress"
+          class="input"
+          type="number"
+          min="0"
+          [attr.max]="total()"
+          inputmode="numeric"
+          [value]="e.progress ?? ''"
+          (change)="setProgress($any($event.target).value)"
+          (keydown.enter)="$any($event.target).blur()"
+        />
+        <span class="of muted">/ {{ total() ?? '?' }} {{ unit() }}</span>
+        <button class="btn btn-icon btn-sm" type="button" (click)="increment()" [disabled]="!!total() && e.progress === total()" aria-label="Add one">
+          <app-icon name="plus" />
+        </button>
+      </div>
+      @if (total() && e.progress) {
+        <div class="bar" aria-hidden="true"><span [style.width.%]="(e.progress / total()!) * 100"></span></div>
+      }
+    </div>
+
+    <button class="remove" type="button" (click)="remove()" [disabled]="saving()"><app-icon name="trash" /> Remove from library</button>
+  }
+</div>

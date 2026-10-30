@@ -1,0 +1,175 @@
+@if (loading()) {
+  <div class="backdrop"></div>
+  <div class="container layout">
+    <aside><div class="skeleton cover-ph"></div></aside>
+    <div class="main">
+      <div class="skeleton" style="width: 30%; height: 14px"></div>
+      <div class="skeleton" style="width: 75%; height: 48px; margin-top: 14px"></div>
+      <div class="skeleton" style="width: 100%; height: 140px; margin-top: 28px"></div>
+    </div>
+  </div>
+} @else if (error()) {
+  <div class="container page">
+    <div class="empty">
+      <span class="glyph" aria-hidden="true">迷</span>
+      <h1>Title unavailable</h1>
+      <p>{{ error() }}</p>
+      <a class="btn" [routerLink]="['/', kind()]">Browse {{ kind() }}</a>
+    </div>
+  </div>
+} @else if (media(); as m) {
+  <div class="backdrop" [style.background-image]="'url(' + coverUrl(m.images) + ')'"></div>
+
+  <div class="container layout">
+    <aside>
+      <img class="cover" [src]="coverUrl(m.images)" [alt]="'Cover of ' + displayTitle(m)" />
+      <app-library-panel [kind]="kind()" [media]="m" />
+      @if (info().length) {
+        <dl class="info">
+          @for (r of info(); track r.label) {
+            <div>
+              <dt>{{ r.label }}</dt>
+              <dd>{{ r.value }}</dd>
+            </div>
+          }
+        </dl>
+      }
+      <a class="mal link" [href]="m.url" target="_blank" rel="noopener">View on MyAnimeList ↗</a>
+    </aside>
+
+    <div class="main">
+      <p class="kicker">{{ m.type || kind() }}{{ m.status ? ' · ' + m.status : '' }}</p>
+      <h1 class="display title">{{ displayTitle(m) }}</h1>
+      @if (altTitles().length) {
+        <p class="alt">{{ altTitles().join(' · ') }}</p>
+      }
+
+      <div class="stats">
+        <div class="stat big">
+          <span class="label">Score</span>
+          <span class="value score">
+            <app-icon name="star" [filled]="true" />
+            {{ m.score ? (m.score | number: '1.2-2') : '—' }}
+          </span>
+          @if (m.scored_by) {
+            <span class="sub">{{ m.scored_by | number }} ratings</span>
+          }
+        </div>
+        <div class="stat">
+          <span class="label">Ranked</span>
+          <span class="value">{{ m.rank ? '#' + (m.rank | number) : '—' }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Popularity</span>
+          <span class="value">{{ m.popularity ? '#' + (m.popularity | number) : '—' }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Members</span>
+          <span class="value">{{ m.members ? (m.members | number) : '—' }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Favourites</span>
+          <span class="value">{{ m.favorites ? (m.favorites | number) : '—' }}</span>
+        </div>
+      </div>
+
+      @if (tags().length) {
+        <div class="tags">
+          @for (g of tags(); track g.mal_id) {
+            <a class="chip" [routerLink]="['/', kind()]" [queryParams]="{ genres: g.mal_id }">{{ g.name }}</a>
+          }
+        </div>
+      }
+
+      <section class="block">
+        <h2 class="section-title">Synopsis</h2>
+        @if (synopsis()) {
+          <p class="synopsis" [class.clamped]="longSynopsis() && !expanded()">{{ synopsis() }}</p>
+          @if (longSynopsis()) {
+            <button class="link more" type="button" (click)="expanded.set(!expanded())">
+              {{ expanded() ? 'Show less' : 'Read more' }}
+            </button>
+          }
+        } @else {
+          <p class="muted">No synopsis yet.</p>
+        }
+      </section>
+
+      @if (kind() === 'anime' && m.trailer?.youtube_id) {
+        <section class="block">
+          <h2 class="section-title">Trailer</h2>
+          <div class="trailer">
+            @if (playTrailer()) {
+              <iframe
+                [src]="trailerUrl()"
+                title="Trailer"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            } @else {
+              <button type="button" class="poster" (click)="playTrailer.set(true)" aria-label="Play trailer">
+                <img [src]="'https://i.ytimg.com/vi/' + m.trailer!.youtube_id + '/hqdefault.jpg'" alt="" loading="lazy" />
+                <span class="play">▶</span>
+              </button>
+            }
+          </div>
+        </section>
+      }
+
+      <section class="block">
+        <h2 class="section-title">Characters</h2>
+        @if (charactersLoading()) {
+          <div class="chars">
+            @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+              <div class="skeleton" style="height: 72px"></div>
+            }
+          </div>
+        } @else if (characters().length) {
+          <div class="chars">
+            @for (c of characters(); track c.character.mal_id) {
+              <a class="char" [routerLink]="['/character', c.character.mal_id]">
+                <img [src]="c.character.images.jpg.image_url" [alt]="c.character.name" loading="lazy" />
+                <span>
+                  <strong>{{ c.character.name }}</strong>
+                  <small [class.main-role]="c.role === 'Main'">{{ c.role }}</small>
+                </span>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="muted">No characters listed.</p>
+        }
+      </section>
+
+      @if (related().length) {
+        <section class="block">
+          <h2 class="section-title">Related</h2>
+          <dl class="related">
+            @for (r of related(); track r.relation) {
+              <div>
+                <dt>{{ r.relation }}</dt>
+                <dd>
+                  @for (e of r.entries; track e.mal_id + e.type) {
+                    <a class="chip" [routerLink]="['/', e.type, e.mal_id]">
+                      <app-icon [name]="e.type === 'manga' ? 'book' : 'tv'" />{{ e.name }}
+                    </a>
+                  }
+                </dd>
+              </div>
+            }
+          </dl>
+        </section>
+      }
+    </div>
+  </div>
+
+  <div class="container">
+    @if (recsLoading() || recommendations().length) {
+      <app-media-row heading="If you like this" subheading="Recommended by MyAnimeList readers" [loading]="recsLoading()">
+        @for (r of recommendations(); track r.entry.mal_id) {
+          <app-media-card [kind]="kind()" [malId]="r.entry.mal_id" [title]="r.entry.title" [image]="coverUrl(r.entry.images, 'normal')" [meta]="r.votes + ' recommendations'" />
+        }
+      </app-media-row>
+    }
+  </div>
+}

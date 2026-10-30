@@ -1,0 +1,239 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-bottom: 1px solid var(--line);
+}
+
+.backdrop {
+  position: absolute;
+  inset: -60px;
+  z-index: -2;
+  background-size: cover;
+  background-position: center 30%;
+  filter: blur(48px) saturate(140%);
+  opacity: 0.4;
+  transform: scale(1.1);
+  transition: background-image 0.6s;
+}
+
+.tone {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    var(--tone),
+    linear-gradient(90deg, var(--ink) 15%, rgb(12 11 16 / 0.55) 60%, rgb(12 11 16 / 0.2)),
+    linear-gradient(0deg, var(--ink), transparent 40%);
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 26vw, 320px);
+  align-items: center;
+  gap: clamp(24px, 5vw, 72px);
+  min-height: min(76vh, 620px);
+  padding-block: 56px 64px;
+}
+
+.copy {
+  max-width: 640px;
+  animation: fade 0.5s ease-out;
+}
+
+.title {
+  margin-top: 14px;
+  font-size: clamp(2.1rem, 1.2rem + 3.6vw, 4rem);
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.jp {
+  margin-top: 8px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.synopsis {
+  margin-top: 18px;
+  color: #d9d2e0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 58ch;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 36px;
+
+  button {
+    width: 28px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 3px;
+    background: var(--ink-4);
+    cursor: pointer;
+    transition:
+      width 0.25s,
+      background 0.25s;
+
+    &.on {
+      width: 48px;
+      background: var(--accent);
+    }
+  }
+}
+
+.poster {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  transform: rotate(2.5deg);
+  transition: transform 0.3s;
+  animation: fade 0.5s ease-out;
+
+  &:hover {
+    transform: rotate(0) translateY(-4px);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.08),
+      0 40px 80px -30px #000,
+      14px 14px 0 -2px var(--accent);
+  }
+}
+
+.hanko {
+  position: absolute;
+  left: -18px;
+  bottom: 28px;
+  padding: 10px 8px;
+  writing-mode: vertical-rl;
+  border: 3px solid var(--accent);
+  border-radius: 6px;
+  background: rgb(12 11 16 / 0.85);
+  color: var(--accent);
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  transform: rotate(-8deg);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding-block: 32px 40px;
+  }
+
+  .poster {
+    display: none;
+  }
+}
+
+.genres {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.genre {
+  --h: 8;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  min-height: 96px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--h) 60% 50% / 0.25);
+  background:
+    var(--tone),
+    linear-gradient(135deg, hsl(var(--h) 70% 45% / 0.32), hsl(var(--h) 60% 20% / 0.15) 60%),
+    var(--ink-2);
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: hsl(var(--h) 80% 60% / 0.7);
+
+    .kanji {
+      transform: rotate(-6deg) scale(1.08);
+      opacity: 0.55;
+    }
+  }
+
+  .name {
+    position: relative;
+    font-weight: 800;
+    font-size: 1.02rem;
+  }
+
+  .kanji {
+    position: absolute;
+    right: 8px;
+    top: -4px;
+    font-size: 4.4rem;
+    line-height: 1;
+    color: hsl(var(--h) 85% 68%);
+    opacity: 0.35;
+    transition:
+      transform 0.3s,
+      opacity 0.3s;
+  }
+}
+
+.join {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: clamp(24px, 4vw, 44px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgb(255 90 54 / 0.35);
+  background:
+    var(--tone),
+    radial-gradient(circle at 100% 0, rgb(255 90 54 / 0.25), transparent 55%),
+    var(--ink-2);
+
+  h2 {
+    margin-top: 8px;
+    font-size: clamp(1.5rem, 1rem + 2vw, 2.2rem);
+  }
+
+  p.muted {
+    margin-top: 10px;
+    max-width: 52ch;
+  }
+}

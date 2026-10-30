@@ -1,0 +1,127 @@
+<div class="head screentone">
+  <div class="container head-inner">
+    <p class="kicker">My library</p>
+    <h1 class="display">Hi, {{ auth.displayName() }}</h1>
+
+    <div class="kinds" role="tablist" aria-label="Library section">
+      <button type="button" role="tab" [class.on]="kind() === 'manga'" [attr.aria-selected]="kind() === 'manga'" (click)="switchKind('manga')">
+        <app-icon name="book" /> Manga <span class="n">{{ kindCounts().manga }}</span>
+      </button>
+      <button type="button" role="tab" [class.on]="kind() === 'anime'" [attr.aria-selected]="kind() === 'anime'" (click)="switchKind('anime')">
+        <app-icon name="tv" /> Anime <span class="n">{{ kindCounts().anime }}</span>
+      </button>
+    </div>
+
+    @if (!loading() && !error()) {
+      <div class="stats">
+        <div class="stat">
+          <span class="value">{{ counts()['ALL'] }}</span>
+          <span class="label">Titles</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ counts()['IN_PROGRESS'] }}</span>
+          <span class="label">{{ label('IN_PROGRESS') }}</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ counts()['COMPLETED'] }}</span>
+          <span class="label">Completed</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ averageRating() ? (averageRating() | number: '1.1-1') : '—' }}</span>
+          <span class="label">Avg. score</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ counts()['FAVORITES'] }}</span>
+          <span class="label">Favourites</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="container page">
+  @if (loading()) {
+    <div class="grid-cards">
+      @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+        <div class="skeleton" style="aspect-ratio: 2 / 3; border-radius: var(--radius)"></div>
+      }
+    </div>
+  } @else if (error()) {
+    <div class="callout error">
+      <strong>Couldn't load your library.</strong> {{ error() }}
+      <div style="margin-top: 12px"><button class="btn btn-sm" type="button" (click)="reload()">Try again</button></div>
+    </div>
+  } @else if (!ofKind().length) {
+    <div class="empty">
+      <span class="glyph" aria-hidden="true">空</span>
+      <h2>No {{ kind() }} saved yet</h2>
+      <p>Open any title and use “Add to library” to track it here. Recommendations appear once you've saved a few.</p>
+      <a class="btn btn-primary" [routerLink]="['/', kind()]">Browse {{ kind() }} <app-icon name="arrow-right" /></a>
+    </div>
+  } @else {
+    <div class="toolbar">
+      <div class="filters" role="group" aria-label="Filter by status">
+        <button type="button" class="chip" [class.active]="filter() === 'ALL'" (click)="filter.set('ALL')">
+          All <span class="c">{{ counts()['ALL'] }}</span>
+        </button>
+        @for (s of statuses; track s) {
+          @if (counts()[s]) {
+            <button type="button" class="chip" [class.active]="filter() === s" (click)="filter.set(s)">
+              {{ label(s) }} <span class="c">{{ counts()[s] }}</span>
+            </button>
+          }
+        }
+        @if (counts()['FAVORITES']) {
+          <button type="button" class="chip" [class.active]="filter() === 'FAVORITES'" (click)="filter.set('FAVORITES')">
+            <app-icon name="heart" [filled]="true" /> Favourites <span class="c">{{ counts()['FAVORITES'] }}</span>
+          </button>
+        }
+      </div>
+      <label class="sr-only" for="lib-sort">Sort</label>
+      <select id="lib-sort" class="select sort" (change)="sort.set($any($event.target).value)">
+        <option value="updated" [selected]="sort() === 'updated'">Recently updated</option>
+        <option value="title" [selected]="sort() === 'title'">Title</option>
+        <option value="rating" [selected]="sort() === 'rating'">Your score</option>
+      </select>
+    </div>
+
+    <div class="grid-cards">
+      @for (e of visible(); track e.mediaType + e.malId) {
+        <div class="item">
+          <app-media-card [kind]="kindOf(e)" [malId]="e.malId" [title]="e.title" [image]="e.imageUrl" [meta]="progressText(e)">
+            @if (e.favorite) {
+              <span cover class="fav" aria-label="Favourite"><app-icon name="heart" [filled]="true" /></span>
+            }
+            @if (e.rating) {
+              <span cover class="mine" [attr.aria-label]="'Your score ' + e.rating">{{ e.rating }}</span>
+            }
+          </app-media-card>
+          <div class="controls">
+            <label class="sr-only" [for]="'st-' + e.malId">Status for {{ e.title }}</label>
+            <select [id]="'st-' + e.malId" class="select mini" [attr.data-status]="e.status" (change)="changeStatus(e, $any($event.target).value)">
+              @for (s of statuses; track s) {
+                <option [value]="s" [selected]="s === e.status">{{ label(s) }}</option>
+              }
+            </select>
+            <button class="del" type="button" (click)="remove(e)" [attr.aria-label]="'Remove ' + e.title"><app-icon name="trash" /></button>
+          </div>
+        </div>
+      } @empty {
+        <p class="muted">Nothing in this list.</p>
+      }
+    </div>
+
+    <app-media-row
+      heading="Recommended for you"
+      subheading="Picked from what readers of your favourites also loved"
+      [loading]="recsLoading()"
+      [error]="recsError()"
+    >
+      @for (r of currentRecs(); track r.malId) {
+        <app-media-card [kind]="kind()" [malId]="r.malId" [title]="r.title" [image]="r.imageUrl" [meta]="'Because you liked ' + r.because[0]" />
+      } @empty {
+        <p class="muted">Rate a few titles 6 or higher to get recommendations.</p>
+      }
+    </app-media-row>
+  }
+</div>

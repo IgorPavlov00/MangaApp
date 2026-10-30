@@ -1,0 +1,139 @@
+<section class="hero">
+  @if (hero(); as m) {
+    <div class="backdrop" [style.background-image]="'url(' + coverUrl(m.images) + ')'"></div>
+  }
+  <div class="tone"></div>
+  <div class="container hero-inner">
+    @if (hero(); as m) {
+      <div class="copy">
+        <p class="kicker">Publishing now · #{{ heroIndex() + 1 }} top ranked</p>
+        <h1 class="display title">{{ displayTitle(m) }}</h1>
+        @if (m.title_japanese) {
+          <p class="jp">{{ m.title_japanese }}</p>
+        }
+        <div class="chips">
+          @if (m.score) {
+            <span class="chip score"><app-icon name="star" [filled]="true" />{{ m.score | number: '1.2-2' }}</span>
+          }
+          @for (g of m.genres.slice(0, 3); track g.mal_id) {
+            <span class="chip">{{ g.name }}</span>
+          }
+          @if (m.authors?.length) {
+            <span class="chip">by {{ m.authors![0].name }}</span>
+          }
+        </div>
+        <p class="synopsis">{{ m.synopsis }}</p>
+        <div class="cta">
+          <a class="btn btn-primary" [routerLink]="['/manga', m.mal_id]">Read more <app-icon name="arrow-right" /></a>
+          <a class="btn btn-ghost" routerLink="/manga">Browse all manga</a>
+        </div>
+        <div class="dots" role="tablist" aria-label="Featured titles">
+          @for (f of featured.items(); track f.mal_id; let i = $index) {
+            <button
+              type="button"
+              role="tab"
+              [class.on]="i === heroIndex()"
+              [attr.aria-selected]="i === heroIndex()"
+              [attr.aria-label]="displayTitle(f)"
+              (click)="select(i)"
+            ></button>
+          }
+        </div>
+      </div>
+      <a class="poster" [routerLink]="['/manga', m.mal_id]" aria-hidden="true" tabindex="-1">
+        <img [src]="coverUrl(m.images)" alt="" />
+        <span class="hanko display">新刊</span>
+      </a>
+    } @else if (featured.loading()) {
+      <div class="copy">
+        <div class="skeleton" style="width: 40%; height: 14px"></div>
+        <div class="skeleton" style="width: 80%; height: 56px; margin-top: 16px"></div>
+        <div class="skeleton" style="width: 100%; height: 80px; margin-top: 24px"></div>
+      </div>
+      <div class="poster"><div class="skeleton" style="height: 100%"></div></div>
+    } @else {
+      <div class="copy">
+        <p class="kicker">Anime & manga finder</p>
+        <h1 class="display title">Find your next obsession.</h1>
+        <div class="cta">
+          <a class="btn btn-primary" routerLink="/manga">Browse manga</a>
+          <a class="btn btn-ghost" routerLink="/anime">Browse anime</a>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<div class="container">
+  <app-media-row
+    heading="Trending manga"
+    subheading="Most-read on MyAnimeList"
+    seeAll="/manga"
+    [loading]="trending.loading()"
+    [error]="trending.error()"
+  >
+    @for (m of trending.items(); track m.mal_id; let i = $index) {
+      <app-media-card
+        kind="manga"
+        [malId]="m.mal_id"
+        [title]="displayTitle(m)"
+        [image]="coverUrl(m.images, 'normal')"
+        [score]="m.score"
+        [meta]="meta(m)"
+        [rank]="i < 10 ? i + 1 : null"
+      />
+    }
+  </app-media-row>
+
+  <app-media-row heading="Airing now" subheading="Top-rated anime this week" seeAll="/anime" [seeAllParams]="{ status: 'airing' }" [loading]="airing.loading()" [error]="airing.error()">
+    @for (m of airing.items(); track m.mal_id) {
+      <app-media-card kind="anime" [malId]="m.mal_id" [title]="displayTitle(m)" [image]="coverUrl(m.images, 'normal')" [score]="m.score" [meta]="meta(m)" />
+    }
+  </app-media-row>
+
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">Explore by genre</h2>
+    </div>
+    <div class="genres">
+      @for (g of genres; track g.id) {
+        <a class="genre" [routerLink]="['/manga']" [queryParams]="{ genres: g.id }" [style.--h]="g.hue">
+          <span class="kanji display" aria-hidden="true">{{ g.kanji }}</span>
+          <span class="name">{{ g.name }}</span>
+        </a>
+      }
+    </div>
+  </section>
+
+  <app-media-row heading="This season" subheading="New and continuing anime" seeAll="/anime" [loading]="season.loading()" [error]="season.error()">
+    @for (m of season.items(); track m.mal_id) {
+      <app-media-card kind="anime" [malId]="m.mal_id" [title]="displayTitle(m)" [image]="coverUrl(m.images, 'normal')" [score]="m.score" [meta]="meta(m)" />
+    }
+  </app-media-row>
+
+  <app-media-row
+    heading="All-time greats"
+    subheading="The highest-scored manga ever"
+    seeAll="/manga"
+    [seeAllParams]="{ order_by: 'score' }"
+    [loading]="greats.loading()"
+    [error]="greats.error()"
+  >
+    @for (m of greats.items(); track m.mal_id) {
+      <app-media-card kind="manga" [malId]="m.mal_id" [title]="displayTitle(m)" [image]="coverUrl(m.images, 'normal')" [score]="m.score" [meta]="meta(m)" />
+    }
+  </app-media-row>
+
+  @if (!auth.user()) {
+    <section class="section join">
+      <div>
+        <p class="kicker">Your library</p>
+        <h2 class="display">Track it. Rate it. Discover more.</h2>
+        <p class="muted">
+          Save what you're reading and watching, rate it, and get recommendations from the titles you love.
+        </p>
+      </div>
+      <a class="btn btn-primary" routerLink="/signup">Create a free account <app-icon name="arrow-right" /></a>
+    </section>
+  }
+</div>
