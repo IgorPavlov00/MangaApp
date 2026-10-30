@@ -10,12 +10,14 @@ if (existsSync('.env')) {
   }
 }
 const get = (key, fallback = '') => process.env[key] ?? fromFile[key] ?? fallback;
+const withScheme = (url) => (/^https?:\/\//.test(url) ? url : `https://${url}`);
 
 const env = {
   supabaseUrl: get('SUPABASE_URL'),
   // The publishable ("anon") key is designed to be public; row level security protects the data.
   supabaseKey: get('SUPABASE_PUBLISHABLE_KEY', get('SUPABASE_ANON_KEY')),
-  apiUrl: get('API_URL', 'http://localhost:8084').replace(/\/$/, ''),
+  // Render's fromService gives a bare host (animan-api.onrender.com); add the scheme if missing.
+  apiUrl: withScheme(get('API_URL', 'http://localhost:8084')).replace(/\/$/, ''),
 };
 
 mkdirSync('src/environments', { recursive: true });

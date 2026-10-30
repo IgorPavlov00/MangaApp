@@ -1,6 +1,7 @@
-# Render Blueprint for the Spring Boot API (Render dashboard -> New -> Blueprint -> this repo).
+# Render Blueprint: the whole app (Render dashboard -> New -> Blueprint -> this repo).
 # Secrets are marked sync: false, so Render asks for them when the blueprint is created.
 services:
+  # Spring Boot API
   - type: web
     name: animan-api
     runtime: docker
@@ -12,12 +13,57 @@ services:
     autoDeploy: true
     envVars:
       - key: SUPABASE_URL
-        sync: false
+        value: https://gtpqmfrjxnvdkovzzhxc.supabase.co
       - key: DATABASE_URL
         sync: false
       - key: DATABASE_USERNAME
         sync: false
       - key: DATABASE_PASSWORD
         sync: false
+      # The static site below (Render may add a suffix to its name), plus local development.
       - key: CORS_ALLOWED_ORIGINS
-        value: https://anime-manga-finder.netlify.app,http://localhost:4200
+        value: https://animan*.onrender.com,http://localhost:4200
+
+  # Angular frontend (static site on Render's CDN)
+  - type: web
+    name: animan
+    runtime: static
+    rootDir: manga-proj/frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist/frontend/browser
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: SUPABASE_URL
+        value: https://gtpqmfrjxnvdkovzzhxc.supabase.co
+      # Publishable keys are designed to be public (they ship to every browser); RLS protects data.
+      - key: SUPABASE_PUBLISHABLE_KEY
+        value: sb_publishable_zlDTVG0D7vEY7AZ6MQnRig_T-dAd2_S
+      - key: API_URL
+        fromService:
+          type: web
+          name: animan-api
+          property: host
+    # Single-page app: let Angular's router handle every path.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      # Hashed bundles never change, so cache them for a year.
+      - path: /*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
