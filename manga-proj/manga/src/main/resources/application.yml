@@ -19,6 +19,9 @@ spring:
       ddl-auto: validate
   flyway:
     enabled: true
+    # Supabase pre-populates the public schema, so start history at version 0 and still run V1+.
+    baseline-on-migrate: true
+    baseline-version: 0
   http:
     clients:
       # Fail fast when Jikan hangs so the AniList fallback can answer instead.
