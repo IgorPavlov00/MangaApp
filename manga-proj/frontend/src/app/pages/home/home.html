@@ -95,15 +95,7 @@
     <div class="section-head">
       <h2 class="section-title">Explore by genre</h2>
     </div>
-    <div class="genres">
-      @for (g of genres; track g.id) {
-        <a class="genre" [routerLink]="['/manga']" [queryParams]="{ genres: g.id }">
-          <img [src]="'genres/' + g.image + '.webp'" alt="" loading="lazy" decoding="async" width="420" height="560" />
-          <span class="stamp" aria-hidden="true">{{ g.kanji }}</span>
-          <span class="caption display">{{ g.name }}</span>
-        </a>
-      }
-    </div>
+    <app-genre-mosaic />
   </section>
 
   <app-media-row heading="This season" subheading="New and continuing anime" seeAll="/anime" [loading]="season.loading()" [error]="season.error()">

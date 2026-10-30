@@ -8,7 +8,7 @@ import { Media, Page, coverUrl, displayTitle } from '../../core/jikan.models';
 import { Icon } from '../../shared/icon';
 import { MediaCard } from '../../shared/media-card';
 import { MediaRow } from '../../shared/media-row';
-import { GENRE_TILES } from './genres';
+import { GenreMosaic } from './genre-mosaic';
 
 interface Shelf {
   items: WritableSignal<Media[]>;
@@ -18,7 +18,7 @@ interface Shelf {
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, DecimalPipe, Icon, MediaCard, MediaRow],
+  imports: [RouterLink, DecimalPipe, Icon, MediaCard, MediaRow, GenreMosaic],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.html',
   styleUrl: './home.scss',
@@ -34,7 +34,6 @@ export default class Home {
   protected readonly season = this.shelf(this.jikan.seasonNow(18));
   protected readonly greats = this.shelf(this.jikan.top('manga', undefined, 18));
 
-  protected readonly genres = GENRE_TILES;
   protected readonly heroIndex = signal(0);
   protected readonly hero = computed(() => this.featured.items()[this.heroIndex()] ?? null);
   protected readonly coverUrl = coverUrl;

@@ -1,0 +1,103 @@
+// Every piece is a full-size layer clipped to its polygon, so the gaps are simply page background
+// showing through and the shapes never overlap. clip-path also limits the clickable area.
+.mosaic {
+  position: relative;
+  width: 100%;
+}
+
+.cell {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: filter 0.3s ease;
+
+  // A hairline of accent traced around the hovered polygon (drop-shadow follows the clip).
+  &:hover,
+  &:focus-within {
+    z-index: 1;
+    filter: drop-shadow(0 0 1px var(--accent)) drop-shadow(0 0 1px var(--accent)) drop-shadow(0 12px 30px rgb(0 0 0 / 0.6));
+  }
+}
+
+.piece {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: auto;
+  background: var(--ink-3);
+  outline: none;
+}
+
+.art {
+  position: absolute;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.82) saturate(1.05);
+    transition:
+      transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+      filter 0.4s ease;
+  }
+
+  // Readability gradient for the caption
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(12 11 16 / 0.9) 0%, rgb(12 11 16 / 0.35) 32%, transparent 58%);
+  }
+}
+
+.label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--paper);
+  font-weight: 800;
+  font-size: clamp(0.8rem, 0.55rem + 0.9vw, 1.35rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.7);
+  transition: transform 0.35s ease;
+
+  .bar {
+    width: 18px;
+    height: 3px;
+    flex: none;
+    background: var(--accent);
+    transition: width 0.35s ease;
+  }
+}
+
+.piece:hover,
+.piece:focus-visible {
+  img {
+    transform: scale(1.07);
+    filter: brightness(1.05) saturate(1.12);
+  }
+
+  .label {
+    transform: translateX(4px);
+  }
+
+  .bar {
+    width: 34px;
+  }
+}
+
+@media (max-width: 720px) {
+  .label {
+    gap: 7px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+
+    .bar {
+      width: 12px;
+    }
+  }
+}

@@ -1,18 +1,17 @@
 /**
- * Comic-panel genre tiles on the home page. Ids are MyAnimeList genre/demographic ids
- * (Jikan's `genres` filter accepts both); art lives in public/genres.
+ * Genres shown in the home page mosaic, in mosaic order (left-to-right, top-to-bottom).
+ * Ids are MyAnimeList genre ids; art lives in public/genres; `focus` is the object-position
+ * that keeps the characters in frame when the art is cropped to its piece.
  */
 export const GENRE_TILES = [
-  { id: 1, name: 'Action', kanji: '闘', image: 'action' },
-  { id: 10, name: 'Fantasy', kanji: '幻', image: 'fantasy' },
-  { id: 27, name: 'Shounen', kanji: '少', image: 'shounen' },
-  { id: 14, name: 'Horror', kanji: '怖', image: 'horror' },
-  { id: 22, name: 'Romance', kanji: '恋', image: 'romance' },
-  { id: 30, name: 'Sports', kanji: '走', image: 'sports' },
-  { id: 41, name: 'Seinen', kanji: '青', image: 'seinen' },
-  { id: 7, name: 'Mystery', kanji: '謎', image: 'mystery' },
-  { id: 18, name: 'Mecha', kanji: '機', image: 'mecha' },
-  { id: 24, name: 'Sci-Fi', kanji: '宙', image: 'sci-fi' },
-  { id: 37, name: 'Super­natural', kanji: '霊', image: 'supernatural' },
-  { id: 31, name: 'Super Power', kanji: '力', image: 'super-power' },
+  { id: 2, name: 'Adventure', image: 'adventure', focus: '50% 30%' },
+  { id: 22, name: 'Romance', image: 'romance', focus: '45% 40%' },
+  { id: 10, name: 'Fantasy', image: 'fantasy', focus: '45% 30%' },
+  { id: 1, name: 'Action', image: 'action', focus: '50% 22%' },
+  { id: 14, name: 'Horror', image: 'horror', focus: '70% 40%' },
+  { id: 24, name: 'Sci-Fi', image: 'sci-fi', focus: '62% 35%' },
+  { id: 4, name: 'Comedy', image: 'comedy', focus: '60% 30%' },
+  { id: 8, name: 'Drama', image: 'drama', focus: '50% 60%' },
+  { id: 7, name: 'Mystery', image: 'mystery', focus: '55% 35%' },
+  { id: 30, name: 'Sports', image: 'sports', focus: '45% 30%' },
 ] as const;
