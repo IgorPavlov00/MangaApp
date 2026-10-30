@@ -15,7 +15,7 @@ export const GENRE_TILES = [
   { id: 7, name: 'Mystery', image: 'mystery', focus: '55% 35%' },
   { id: 41, name: 'Seinen', image: 'seinen', focus: '50% 30%' },
   { id: 18, name: 'Mecha', image: 'mecha', focus: '50% 25%' },
-  { id: 37, name: 'Supernatural', image: 'supernatural', focus: '50% 18%' },
+  { id: 37, name: 'Supernatural', image: 'supernatural', focus: '55% 6%' },
   { id: 8, name: 'Drama', image: 'drama', focus: '45% 40%' },
   { id: 31, name: 'Super Power', image: 'super-power', focus: '55% 30%' },
   { id: 30, name: 'Sports', image: 'sports', focus: '50% 28%' },
