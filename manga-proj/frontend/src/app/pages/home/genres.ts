@@ -1,5 +1,5 @@
 /**
- * Genres shown in the home page mosaic, in mosaic order (left-to-right, top-to-bottom).
+ * Genres with artwork. The home page mosaic shows FEATURED_GENRES; the rest are reachable from Browse.
  * Ids are MyAnimeList genre/demographic ids (Jikan's `genres` filter accepts both); art lives in
  * public/genres; `focus` is the object-position that keeps the characters in frame.
  */
@@ -20,3 +20,6 @@ export const GENRE_TILES = [
   { id: 31, name: 'Super Power', image: 'super-power', focus: '55% 30%' },
   { id: 30, name: 'Sports', image: 'sports', focus: '50% 28%' },
 ] as const;
+
+/** Shown in the home mosaic, in piece order: the tall feature piece first, then column by column. */
+export const FEATURED_GENRES = [1, 10, 22, 14, 30, 7, 24].map((id) => GENRE_TILES.find((g) => g.id === id)!);

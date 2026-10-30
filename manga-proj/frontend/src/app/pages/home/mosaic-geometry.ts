@@ -5,6 +5,8 @@
  * lines. Every piece is a quad whose edges are shared with its neighbours, so after shrinking
  * each piece inward by half the gap, all separators have exactly the same width, even diagonally.
  * Coordinates are in design units and converted to percentages, so the mosaic scales fluidly.
+ * With orientation 'columns' the same description is read sideways: `lines` separate columns and
+ * `cuts` split each column top-to-bottom, which allows tall pieces spanning the full height.
  */
 
 export interface MosaicLayout {
@@ -14,9 +16,11 @@ export interface MosaicLayout {
   gap: number;
   /** Corner radius of each piece, in design units. */
   radius: number;
-  /** Row boundaries from top to bottom as [y at left edge, y at right edge]. */
+  /** 'rows' (default): lines run left-to-right. 'columns': lines run top-to-bottom. */
+  orientation?: 'rows' | 'columns';
+  /** Row boundaries from top to bottom as [y at left edge, y at right edge] (columns: [x at top, x at bottom]). */
   lines: [number, number][];
-  /** For each row, its cut lines from left to right as [x on the row's top line, x on its bottom line]. */
+  /** For each row, its cut lines as [x on the row's top line, x on its bottom line] (columns: [y on left line, y on right line]). */
   cuts: [number, number][][];
 }
 
@@ -32,9 +36,25 @@ export interface Piece {
 type Point = { x: number; y: number };
 
 export function buildMosaic(layout: MosaicLayout): Piece[] {
-  const { width: W, height: H, lines, cuts } = layout;
+  if (layout.orientation !== 'columns') return buildRows(layout);
+  // Build in transposed space, then mirror each quad back across the diagonal. Mirroring flips the
+  // winding, so reorder the corners to clockwise TL, TR, BR, BL again.
+  const transposed = { ...layout, width: layout.height, height: layout.width, orientation: 'rows' as const };
+  return buildQuads(transposed).map((quad) => {
+    const [tl, tr, br, bl] = quad.map((p) => ({ x: p.y, y: p.x }));
+    return toPiece([tl, bl, br, tr], layout);
+  });
+}
+
+function buildRows(layout: MosaicLayout): Piece[] {
+  return buildQuads(layout).map((quad) => toPiece(quad, layout));
+}
+
+/** Inset quads (clockwise TL, TR, BR, BL) for a row-oriented layout. */
+function buildQuads(layout: MosaicLayout): Point[][] {
+  const { width: W, lines, cuts } = layout;
   const yOn = (line: [number, number], x: number) => line[0] + ((line[1] - line[0]) * x) / W;
-  const pieces: Piece[] = [];
+  const quads: Point[][] = [];
 
   cuts.forEach((rowCuts, r) => {
     const top = lines[r];
@@ -50,10 +70,10 @@ export function buildMosaic(layout: MosaicLayout): Piece[] {
         { x: rb, y: yOn(bottom, rb) },
         { x: lb, y: yOn(bottom, lb) },
       ];
-      pieces.push(toPiece(inset(quad, layout), layout));
+      quads.push(inset(quad, layout));
     }
   });
-  return pieces;
+  return quads;
 }
 
 /** Moves every inner edge inward by gap/2; edges lying on the mosaic border stay put. */
@@ -132,58 +152,38 @@ function round4(n: number): number {
 }
 
 
-/** Desktop: four interlocking rows (3 + 4 + 4 + 4 pieces) with alternating diagonal cuts. */
+/**
+ * Desktop bento: a tall feature piece on the left, then three columns of two, with every column
+ * divider and every cut slanted.
+ */
 export const DESKTOP_LAYOUT: MosaicLayout = {
+  orientation: 'columns',
   width: 1200,
-  height: 1120,
+  height: 660,
   gap: 14,
-  radius: 16,
+  radius: 18,
   lines: [
     [0, 0],
-    [300, 262],
-    [560, 600],
-    [860, 822],
-    [1120, 1120],
+    [430, 386],
+    [668, 712],
+    [944, 908],
+    [1200, 1200],
   ],
-  cuts: [
-    [
-      [540, 486],
-      [830, 878],
-    ],
-    [
-      [290, 330],
-      [600, 560],
-      [890, 935],
-    ],
-    [
-      [320, 280],
-      [610, 655],
-      [905, 870],
-    ],
-    [
-      [280, 318],
-      [600, 560],
-      [880, 925],
-    ],
-  ],
+  cuts: [[], [[344, 300]], [[290, 340]], [[352, 306]]],
 };
 
-/** Mobile: two columns, cuts and row lines alternating direction; the last piece spans the full width. */
+/** Mobile: the feature piece spans the full width, then three rows of two. */
 export const MOBILE_LAYOUT: MosaicLayout = {
   width: 400,
-  height: 1760,
+  height: 1000,
   gap: 9,
-  radius: 12,
+  radius: 14,
   lines: [
     [0, 0],
-    [232, 206],
-    [440, 468],
-    [668, 640],
-    [880, 906],
-    [1110, 1084],
-    [1320, 1346],
-    [1550, 1524],
-    [1760, 1760],
+    [292, 262],
+    [524, 554],
+    [776, 746],
+    [1000, 1000],
   ],
-  cuts: [[[232, 192]], [[168, 214]], [[226, 184]], [[176, 222]], [[220, 182]], [[186, 226]], [[224, 186]], []],
+  cuts: [[], [[232, 192]], [[168, 214]], [[226, 184]]],
 };

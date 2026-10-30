@@ -60,7 +60,8 @@ export default class Browse {
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
   protected readonly genres = signal<Genre[]>([]);
-  protected readonly showGenres = signal(false);
+  /** Opened from the home page's "All genres" link (?panel=genres). */
+  protected readonly showGenres = signal(this.route.snapshot.queryParamMap.get('panel') === 'genres');
   protected readonly term = linkedSignal(() => this.filters().q);
 
   protected readonly typeOptions = computed(() => TYPE_OPTIONS[this.kind()]);

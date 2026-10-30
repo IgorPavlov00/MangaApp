@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GENRE_TILES } from './genres';
+import { FEATURED_GENRES } from './genres';
 import { DESKTOP_LAYOUT, MOBILE_LAYOUT, buildMosaic } from './mosaic-geometry';
 
 let instances = 0;
@@ -65,7 +65,7 @@ export class GenreMosaic {
 
   protected readonly tiles = computed(() => {
     const pieces = this.mobile() ? MOBILE_PIECES : DESKTOP_PIECES;
-    return GENRE_TILES.map((genre, i) => ({ genre, piece: pieces[i] }));
+    return FEATURED_GENRES.map((genre, i) => ({ genre, piece: pieces[i] }));
   });
   protected readonly ratio = computed(() => {
     const layout = this.mobile() ? MOBILE_LAYOUT : DESKTOP_LAYOUT;
