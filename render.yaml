@@ -20,9 +20,9 @@ services:
         sync: false
       - key: DATABASE_PASSWORD
         sync: false
-      # The static site below (Render may add a suffix to its name), plus local development.
+      # The static site below, plus local development.
       - key: CORS_ALLOWED_ORIGINS
-        value: https://animan*.onrender.com,http://localhost:4200
+        value: https://animan-f1ym.onrender.com,http://localhost:4200
 
   # Angular frontend (static site on Render's CDN)
   - type: web
@@ -40,11 +40,10 @@ services:
       # Publishable keys are designed to be public (they ship to every browser); RLS protects data.
       - key: SUPABASE_PUBLISHABLE_KEY
         value: sb_publishable_zlDTVG0D7vEY7AZ6MQnRig_T-dAd2_S
+      # Public URL of the API. (fromService "host" would give Render's private hostname,
+      # which browsers cannot reach.)
       - key: API_URL
-        fromService:
-          type: web
-          name: animan-api
-          property: host
+        value: https://animan-api.onrender.com
     # Single-page app: let Angular's router handle every path.
     routes:
       - type: rewrite

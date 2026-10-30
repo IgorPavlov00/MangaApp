@@ -8,7 +8,7 @@
 A full-stack app for discovering anime and manga and keeping a personal library of what you read and watch.
 Catalogue data comes live from MyAnimeList through the [Jikan API](https://jikan.moe/).
 
-**Live demo:** https://animan.onrender.com
+**Live demo:** https://animan-f1ym.onrender.com
 
 ---
 
@@ -73,7 +73,7 @@ Tests: `./mvnw test` (Postgres repository tests run via Testcontainers when Dock
 ## 🚀 Deployment
 
 1. **Supabase**: create a project. Under *Authentication → URL Configuration*, set the Site URL to your frontend URL and add `http://localhost:4200/**` as a redirect URL. Paste the templates from `supabase/email-templates/` into *Authentication → Emails*. For real users, configure custom SMTP (the built-in sender is heavily rate-limited).
-2. **Render** (API + frontend): *New → Blueprint* and pick this repo. `render.yaml` creates two services: `animan-api` (Spring Boot, Docker) and `animan` (the Angular static site, which gets the API URL automatically). Fill in the **Session pooler** connection details (`DATABASE_URL` as a `jdbc:postgresql://…` URL, `DATABASE_USERNAME`, `DATABASE_PASSWORD`), since Render needs the IPv4 pooler. Flyway creates the tables on first boot. If you use your own Supabase project, change `SUPABASE_URL`/`SUPABASE_PUBLISHABLE_KEY` in `render.yaml`.
+2. **Render** (API + frontend): *New → Blueprint* and pick this repo. `render.yaml` creates two services: `animan-api` (Spring Boot, Docker) and `animan` (the Angular static site). Render may add a suffix to service names; set `API_URL` and `CORS_ALLOWED_ORIGINS` in `render.yaml` to the public URLs you get. Fill in the **Session pooler** connection details (`DATABASE_URL` as a `jdbc:postgresql://…` URL, `DATABASE_USERNAME`, `DATABASE_PASSWORD`), since Render needs the IPv4 pooler. Flyway creates the tables on first boot. If you use your own Supabase project, change `SUPABASE_URL`/`SUPABASE_PUBLISHABLE_KEY` in `render.yaml`.
 
 > The free Render tier sleeps after inactivity, so the first API call can take up to a minute. The UI shows a "waking up" banner meanwhile.
 
