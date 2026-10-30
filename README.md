@@ -8,7 +8,7 @@
 A full-stack app for discovering anime and manga and keeping a personal library of what you read and watch.
 Catalogue data comes live from MyAnimeList through the [Jikan API](https://jikan.moe/).
 
-**Live demo:** https://animan.onrender.com
+**Live demo:** https://animan-f1ym.onrender.com/
 
 ---
 
