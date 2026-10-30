@@ -132,17 +132,18 @@ function round4(n: number): number {
 }
 
 
-/** Desktop: three interlocking rows (3 + 3 + 4 pieces) with alternating diagonal cuts. */
+/** Desktop: four interlocking rows (3 + 4 + 4 + 4 pieces) with alternating diagonal cuts. */
 export const DESKTOP_LAYOUT: MosaicLayout = {
   width: 1200,
-  height: 820,
+  height: 1120,
   gap: 14,
   radius: 16,
   lines: [
     [0, 0],
-    [310, 268],
-    [548, 590],
-    [820, 820],
+    [300, 262],
+    [560, 600],
+    [860, 822],
+    [1120, 1120],
   ],
   cuts: [
     [
@@ -150,30 +151,39 @@ export const DESKTOP_LAYOUT: MosaicLayout = {
       [830, 878],
     ],
     [
-      [372, 430],
-      [800, 742],
+      [290, 330],
+      [600, 560],
+      [890, 935],
     ],
     [
-      [300, 252],
-      [610, 662],
-      [918, 880],
+      [320, 280],
+      [610, 655],
+      [905, 870],
+    ],
+    [
+      [280, 318],
+      [600, 560],
+      [880, 925],
     ],
   ],
 };
 
-/** Mobile: two columns, five rows, cuts and row lines alternating direction. */
+/** Mobile: two columns, cuts and row lines alternating direction; the last piece spans the full width. */
 export const MOBILE_LAYOUT: MosaicLayout = {
   width: 400,
-  height: 1180,
+  height: 1760,
   gap: 9,
   radius: 12,
   lines: [
     [0, 0],
-    [244, 216],
-    [460, 492],
-    [712, 680],
-    [936, 962],
-    [1180, 1180],
+    [232, 206],
+    [440, 468],
+    [668, 640],
+    [880, 906],
+    [1110, 1084],
+    [1320, 1346],
+    [1550, 1524],
+    [1760, 1760],
   ],
-  cuts: [[[232, 192]], [[168, 214]], [[226, 184]], [[176, 222]], [[220, 182]]],
+  cuts: [[[232, 192]], [[168, 214]], [[226, 184]], [[176, 222]], [[220, 182]], [[186, 226]], [[224, 186]], []],
 };
