@@ -21,6 +21,24 @@ Catalogue data comes live from MyAnimeList through the [Jikan API](https://jikan
 - **🔐 Accounts**: sign-up with email confirmation, sign-in, password reset and profile settings, powered by Supabase Auth.
 - **📱 Responsive**: designed for phones up to wide desktops, keyboard-accessible.
 
+## 📸 Screenshots
+
+![Home page with the featured title carousel](docs/screenshots/home.jpg)
+
+| Explore by genre | Browse & filter |
+| --- | --- |
+| ![Genre mosaic](docs/screenshots/genres.jpg) | ![Browse manga with genre and score filters](docs/screenshots/browse.jpg) |
+| **Title details** | **Your library** |
+| ![Manga detail page](docs/screenshots/detail.jpg) | ![Library with stats](docs/screenshots/library.jpg) |
+| **Personalised recommendations** | **Sign-in with an animated manga wall** |
+| ![Recommendations built from your library](docs/screenshots/recommendations.jpg) | ![Auth page](docs/screenshots/auth.jpg) |
+
+**On mobile**
+
+![Mobile layouts: home, details and password reset](docs/screenshots/mobile.jpg)
+
+---
+
 ## 🏗️ Architecture
 
 ```
