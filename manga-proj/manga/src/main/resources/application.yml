@@ -19,6 +19,11 @@ spring:
       ddl-auto: validate
   flyway:
     enabled: true
+  http:
+    clients:
+      # Fail fast when Jikan hangs so the AniList fallback can answer instead.
+      connect-timeout: 4s
+      read-timeout: 8s
   cache:
     cache-names: jikan-recommendations
     caffeine:

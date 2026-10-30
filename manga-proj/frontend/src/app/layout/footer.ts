@@ -19,7 +19,8 @@ import { RouterLink } from '@angular/router';
         </nav>
         <p class="credit muted">
           Data from <a class="link" href="https://jikan.moe" target="_blank" rel="noopener">Jikan</a>, the unofficial
-          <a class="link" href="https://myanimelist.net" target="_blank" rel="noopener">MyAnimeList</a> API.
+          <a class="link" href="https://myanimelist.net" target="_blank" rel="noopener">MyAnimeList</a> API, with
+          <a class="link" href="https://anilist.co" target="_blank" rel="noopener">AniList</a> as a backup.
           Built with Angular, Spring Boot and Supabase.
         </p>
       </div>
