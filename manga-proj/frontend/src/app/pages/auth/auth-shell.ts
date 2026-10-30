@@ -12,7 +12,6 @@ const ART = [
   'shounen',
   'seinen',
   'mecha',
-  'supernatural',
   'super-power',
   'adventure',
   'comedy',
