@@ -13,6 +13,6 @@ export const GENRE_TILES = [
   { id: 7, name: 'Mystery', kanji: '謎', image: 'mystery' },
   { id: 18, name: 'Mecha', kanji: '機', image: 'mecha' },
   { id: 24, name: 'Sci-Fi', kanji: '宙', image: 'sci-fi' },
-  { id: 37, name: 'Super00ADnatural', kanji: '霊', image: 'supernatural' },
+  { id: 37, name: 'Super­natural', kanji: '霊', image: 'supernatural' },
   { id: 31, name: 'Super Power', kanji: '力', image: 'super-power' },
 ] as const;
