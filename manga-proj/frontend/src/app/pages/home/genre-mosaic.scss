@@ -1,5 +1,11 @@
 // Every piece is a full-size layer clipped to its polygon, so the gaps are simply page background
 // showing through and the shapes never overlap. clip-path also limits the clickable area.
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
 .mosaic {
   position: relative;
   width: 100%;
@@ -58,10 +64,10 @@
   gap: 10px;
   color: var(--paper);
   font-weight: 800;
-  font-size: clamp(0.8rem, 0.55rem + 0.9vw, 1.35rem);
-  letter-spacing: 0.14em;
+  font-size: clamp(0.76rem, 0.5rem + 0.65vw, 1.05rem);
+  line-height: 1.15;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  white-space: nowrap;
   text-shadow: 0 2px 12px rgb(0 0 0 / 0.7);
   transition: transform 0.35s ease;
 
@@ -92,12 +98,12 @@
 
 @media (max-width: 720px) {
   .label {
-    gap: 7px;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
+    gap: 6px;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
 
     .bar {
-      width: 12px;
+      width: 10px;
     }
   }
 }

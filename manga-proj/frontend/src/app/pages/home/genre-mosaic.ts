@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import { GENRE_TILES } from './genres';
 import { DESKTOP_LAYOUT, MOBILE_LAYOUT, buildMosaic } from './mosaic-geometry';
 
+let instances = 0;
+
 const DESKTOP_PIECES = buildMosaic(DESKTOP_LAYOUT);
 const MOBILE_PIECES = buildMosaic(MOBILE_LAYOUT);
 
@@ -12,12 +14,22 @@ const MOBILE_PIECES = buildMosaic(MOBILE_LAYOUT);
   imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <!-- Rounded-corner clip shapes, one per piece (objectBoundingBox units, so they scale) -->
+    <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        @for (tile of tiles(); track tile.genre.id) {
+          <clipPath [attr.id]="clipId(tile.genre.id)" clipPathUnits="objectBoundingBox">
+            <path [attr.d]="tile.piece.path" />
+          </clipPath>
+        }
+      </defs>
+    </svg>
     <div class="mosaic" [style.aspect-ratio]="ratio()">
       @for (tile of tiles(); track tile.genre.id) {
         <div class="cell">
           <a
             class="piece"
-            [style.clip-path]="tile.piece.clipPath"
+            [style.clip-path]="'url(#' + clipId(tile.genre.id) + ')'"
             [routerLink]="['/manga']"
             [queryParams]="{ genres: tile.genre.id }"
             [attr.aria-label]="'Browse ' + tile.genre.name + ' manga'"
@@ -48,6 +60,8 @@ const MOBILE_PIECES = buildMosaic(MOBILE_LAYOUT);
 })
 export class GenreMosaic {
   private readonly mobile = signal(false);
+  /** Clip path ids must be unique in the document. */
+  private readonly uid = `gm${instances++}`;
 
   protected readonly tiles = computed(() => {
     const pieces = this.mobile() ? MOBILE_PIECES : DESKTOP_PIECES;
@@ -57,6 +71,10 @@ export class GenreMosaic {
     const layout = this.mobile() ? MOBILE_LAYOUT : DESKTOP_LAYOUT;
     return `${layout.width} / ${layout.height}`;
   });
+
+  protected clipId(genreId: number): string {
+    return `${this.uid}-${genreId}`;
+  }
 
   constructor() {
     const query = window.matchMedia('(max-width: 720px)');

@@ -12,6 +12,8 @@ export interface MosaicLayout {
   height: number;
   /** Gap between pieces, in design units. */
   gap: number;
+  /** Corner radius of each piece, in design units. */
+  radius: number;
   /** Row boundaries from top to bottom as [y at left edge, y at right edge]. */
   lines: [number, number][];
   /** For each row, its cut lines from left to right as [x on the row's top line, x on its bottom line]. */
@@ -19,8 +21,8 @@ export interface MosaicLayout {
 }
 
 export interface Piece {
-  /** clip-path polygon in % of the mosaic box */
-  clipPath: string;
+  /** SVG path for clipPathUnits="objectBoundingBox" (0..1 of the mosaic box), with rounded corners. */
+  path: string;
   /** Bounding box of the piece in % of the mosaic box (for positioning the artwork). */
   box: { left: number; top: number; width: number; height: number };
   /** Bottom-left anchor for the caption, inside the piece, in %. */
@@ -48,7 +50,7 @@ export function buildMosaic(layout: MosaicLayout): Piece[] {
         { x: rb, y: yOn(bottom, rb) },
         { x: lb, y: yOn(bottom, lb) },
       ];
-      pieces.push(toPiece(inset(quad, layout), W, H));
+      pieces.push(toPiece(inset(quad, layout), layout));
     }
   });
   return pieces;
@@ -80,7 +82,7 @@ function intersect(e1: { p: Point; d: Point }, e2: { p: Point; d: Point }): Poin
   return { x: e1.p.x + e1.d.x * t, y: e1.p.y + e1.d.y * t };
 }
 
-function toPiece(quad: Point[], W: number, H: number): Piece {
+function toPiece(quad: Point[], { width: W, height: H, radius }: MosaicLayout): Piece {
   const px = (x: number) => (x / W) * 100;
   const py = (y: number) => (y / H) * 100;
   const xs = quad.map((p) => p.x);
@@ -91,7 +93,7 @@ function toPiece(quad: Point[], W: number, H: number): Piece {
   const labelY = Math.min(bl.y, br.y) - pad;
   const rightLimit = Math.min(tr.x, br.x) - pad;
   return {
-    clipPath: `polygon(${quad.map((p) => `${round(px(p.x))}% ${round(py(p.y))}%`).join(', ')})`,
+    path: roundedPath(quad, radius, W, H),
     box: {
       left: px(Math.min(...xs)),
       top: py(Math.min(...ys)),
@@ -102,15 +104,40 @@ function toPiece(quad: Point[], W: number, H: number): Piece {
   };
 }
 
-function round(n: number): number {
-  return Math.round(n * 100) / 100;
+/**
+ * Closed path through the quad with each corner replaced by a quadratic curve that starts and ends
+ * `radius` away from the vertex along its two edges. Output is normalised to 0..1 so the clip path
+ * scales with the element (clipPathUnits="objectBoundingBox").
+ */
+function roundedPath(quad: Point[], radius: number, W: number, H: number): string {
+  const n = (p: Point) => `${round4(p.x / W)} ${round4(p.y / H)}`;
+  const toward = (from: Point, to: Point, dist: number): Point => {
+    const len = Math.hypot(to.x - from.x, to.y - from.y);
+    const t = Math.min(dist, len / 2) / len;
+    return { x: from.x + (to.x - from.x) * t, y: from.y + (to.y - from.y) * t };
+  };
+  let d = '';
+  quad.forEach((v, i) => {
+    const prev = quad[(i - 1 + quad.length) % quad.length];
+    const next = quad[(i + 1) % quad.length];
+    const start = toward(v, prev, radius);
+    const end = toward(v, next, radius);
+    d += `${i === 0 ? 'M' : 'L'}${n(start)} Q${n(v)} ${n(end)} `;
+  });
+  return d + 'Z';
 }
+
+function round4(n: number): number {
+  return Math.round(n * 10000) / 10000;
+}
+
 
 /** Desktop: three interlocking rows (3 + 3 + 4 pieces) with alternating diagonal cuts. */
 export const DESKTOP_LAYOUT: MosaicLayout = {
   width: 1200,
   height: 820,
   gap: 14,
+  radius: 16,
   lines: [
     [0, 0],
     [310, 268],
@@ -139,6 +166,7 @@ export const MOBILE_LAYOUT: MosaicLayout = {
   width: 400,
   height: 1180,
   gap: 9,
+  radius: 12,
   lines: [
     [0, 0],
     [244, 216],
