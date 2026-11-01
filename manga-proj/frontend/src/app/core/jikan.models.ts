@@ -87,6 +87,22 @@ export interface Recommendation {
   votes: number;
 }
 
+/** A user review from /{kind}/{id}/reviews. */
+export interface Review {
+  mal_id: number;
+  url: string;
+  date: string;
+  review: string;
+  score: number | null;
+  tags: string[];
+  is_spoiler: boolean;
+  is_preliminary: boolean;
+  chapters_read?: number | null;
+  episodes_watched?: number | null;
+  reactions?: { overall: number };
+  user: { username: string; url: string; images?: JikanImages };
+}
+
 export interface Genre {
   mal_id: number;
   name: string;

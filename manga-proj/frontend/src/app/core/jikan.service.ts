@@ -10,6 +10,7 @@ import {
   MediaKind,
   Page,
   Recommendation,
+  Review,
   SearchParams,
   Single,
 } from './jikan.models';
@@ -66,6 +67,12 @@ export class JikanService {
 
   recommendations(kind: MediaKind, id: number): Observable<Page<Recommendation>> {
     return this.get(`/${kind}/${id}/recommendations`, {}, () => this.anilist.recommendations(kind, id));
+  }
+
+  reviews(kind: MediaKind, id: number, page = 1): Observable<Page<Review>> {
+    return this.get(`/${kind}/${id}/reviews`, { page, preliminary: true, spoilers: true }, () =>
+      this.anilist.reviews(kind, id, page),
+    );
   }
 
   /** MAL character ids are positive; negative ids are AniList characters (from the fallback). */

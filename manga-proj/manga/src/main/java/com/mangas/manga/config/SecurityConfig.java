@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health/**", "/docs/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // Anyone can read comments; posting, editing and deleting need a token.
+                        .requestMatchers(HttpMethod.GET, "/api/comments/*/*").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().denyAll())
                 .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));

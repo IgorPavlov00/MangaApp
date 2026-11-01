@@ -1,0 +1,228 @@
+<section class="discussion">
+  <div class="head">
+    <h2 class="section-title">Discussion</h2>
+    <div class="tabs" role="tablist" aria-label="Discussion">
+      <button
+        type="button"
+        role="tab"
+        id="tab-comments"
+        aria-controls="panel-comments"
+        [attr.aria-selected]="tab() === 'comments'"
+        [class.active]="tab() === 'comments'"
+        (click)="selectTab('comments')"
+      >
+        Comments
+        @if (commentTotal()) {
+          <span class="count">{{ commentTotal() }}</span>
+        }
+      </button>
+      <button
+        type="button"
+        role="tab"
+        id="tab-reviews"
+        aria-controls="panel-reviews"
+        [attr.aria-selected]="tab() === 'reviews'"
+        [class.active]="tab() === 'reviews'"
+        (click)="selectTab('reviews')"
+      >
+        MyAnimeList reviews
+      </button>
+    </div>
+  </div>
+
+  @if (tab() === 'comments') {
+    <div id="panel-comments" role="tabpanel" aria-labelledby="tab-comments">
+      @if (auth.user()) {
+        <form class="composer" (submit)="$event.preventDefault(); post()">
+          <span class="avatar me" aria-hidden="true">{{ initial(auth.displayName()) }}</span>
+          <div class="compose-body">
+            <label class="sr-only" for="new-comment">Your comment</label>
+            <textarea
+              id="new-comment"
+              class="input textarea"
+              rows="3"
+              [attr.maxlength]="maxLength"
+              [placeholder]="'What did you think of this ' + kind() + '?'"
+              [value]="draft()"
+              (input)="draft.set($any($event.target).value)"
+              (keydown.control.enter)="post()"
+              (keydown.meta.enter)="post()"
+            ></textarea>
+            <div class="compose-actions">
+              <label class="check">
+                <input type="checkbox" [checked]="draftSpoiler()" (change)="draftSpoiler.set($any($event.target).checked)" />
+                Contains spoilers
+              </label>
+              <span class="counter" [class.near]="draft().length > maxLength - 200">{{ draft().length }}/{{ maxLength }}</span>
+              <button class="btn btn-primary btn-sm" type="submit" [disabled]="!draft().trim() || posting()">Post</button>
+            </div>
+          </div>
+        </form>
+      } @else {
+        <div class="callout signin">
+          <span>Sign in to share your thoughts on this {{ kind() }}.</span>
+          <a class="btn btn-sm btn-primary" routerLink="/login" [queryParams]="loginLink()">Sign in</a>
+        </div>
+      }
+
+      @if (commentsError()) {
+        <div class="callout error">
+          {{ commentsError() }}
+          <button class="link" type="button" (click)="loadComments()">Try again</button>
+        </div>
+      } @else if (commentsLoading() && !comments().length) {
+        @for (i of [1, 2]; track i) {
+          <div class="skeleton" style="height: 84px; margin-top: 14px"></div>
+        }
+      } @else if (!comments().length) {
+        <p class="muted empty">No comments yet. Be the first!</p>
+      } @else {
+        <ul class="items">
+          @for (c of comments(); track c.id) {
+            <li class="item">
+              <span class="avatar" aria-hidden="true">{{ initial(c.authorName) }}</span>
+              <div class="item-body">
+                <div class="meta">
+                  <strong>{{ c.authorName }}</strong>
+                  @if (c.mine) {
+                    <span class="badge">You</span>
+                  }
+                  <time [attr.datetime]="c.createdAt" [title]="c.createdAt">{{ ago(c.createdAt) }}</time>
+                  @if (c.edited) {
+                    <span class="faint">· edited</span>
+                  }
+                </div>
+
+                @if (editingId() === c.id) {
+                  <label class="sr-only" [for]="'edit-' + c.id">Edit comment</label>
+                  <textarea
+                    [id]="'edit-' + c.id"
+                    class="input textarea"
+                    rows="3"
+                    [attr.maxlength]="maxLength"
+                    [value]="editDraft()"
+                    (input)="editDraft.set($any($event.target).value)"
+                    (keydown.escape)="editingId.set(null)"
+                  ></textarea>
+                  <div class="compose-actions">
+                    <label class="check">
+                      <input type="checkbox" [checked]="editSpoiler()" (change)="editSpoiler.set($any($event.target).checked)" />
+                      Contains spoilers
+                    </label>
+                    <button class="btn btn-sm btn-ghost" type="button" (click)="editingId.set(null)">Cancel</button>
+                    <button class="btn btn-sm btn-primary" type="button" [disabled]="!editDraft().trim() || posting()" (click)="saveEdit(c)">
+                      Save
+                    </button>
+                  </div>
+                } @else {
+                  @if (c.spoiler && !c.mine && !revealed().has(c.id)) {
+                    <button class="spoiler" type="button" (click)="reveal(c.id)">Contains spoilers. Click to show.</button>
+                  } @else {
+                    @if (c.spoiler) {
+                      <span class="tag warn">Spoiler</span>
+                    }
+                    <p class="text">{{ c.body }}</p>
+                  }
+
+                  @if (c.mine) {
+                    <div class="own-actions">
+                      @if (confirmDeleteId() === c.id) {
+                        <span class="faint">Delete this comment?</span>
+                        <button class="link danger" type="button" (click)="remove(c)">Delete</button>
+                        <button class="link" type="button" (click)="confirmDeleteId.set(null)">Keep</button>
+                      } @else {
+                        <button class="link" type="button" (click)="startEdit(c)">Edit</button>
+                        <button class="link" type="button" (click)="confirmDeleteId.set(c.id)">
+                          <app-icon name="trash" /> Delete
+                        </button>
+                      }
+                    </div>
+                  }
+                }
+              </div>
+            </li>
+          }
+        </ul>
+        @if (commentPage() + 1 < commentPages()) {
+          <button class="btn btn-sm more" type="button" [disabled]="commentsLoading()" (click)="moreComments()">
+            {{ commentsLoading() ? 'Loading…' : 'Show more comments' }}
+          </button>
+        }
+      }
+    </div>
+  } @else {
+    <div id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews">
+      @if (reviewsError() && !reviews().length) {
+        <div class="callout error">
+          We couldn't load reviews right now.
+          <button class="link" type="button" (click)="loadReviews()">Try again</button>
+        </div>
+      } @else if (reviewsLoading() && !reviews().length) {
+        @for (i of [1, 2, 3]; track i) {
+          <div class="skeleton" style="height: 140px; margin-top: 14px"></div>
+        }
+      } @else if (!reviews().length) {
+        <p class="muted empty">No reviews on MyAnimeList yet.</p>
+      } @else {
+        <ul class="items">
+          @for (r of reviews(); track r.mal_id) {
+            <li class="item review">
+              @if (r.user.images?.jpg?.image_url) {
+                <img class="avatar" [src]="r.user.images!.jpg.image_url" alt="" loading="lazy" />
+              } @else {
+                <span class="avatar" aria-hidden="true">{{ initial(r.user.username) }}</span>
+              }
+              <div class="item-body">
+                <div class="meta">
+                  <a class="author" [href]="r.user.url" target="_blank" rel="noopener">{{ r.user.username }}</a>
+                  <time [attr.datetime]="r.date">{{ ago(r.date) }}</time>
+                  @if (r.score) {
+                    <span class="score"><app-icon name="star" [filled]="true" />{{ r.score }}/10</span>
+                  }
+                </div>
+                <div class="tags">
+                  @for (t of r.tags; track t) {
+                    <span class="tag" [class.good]="t === 'Recommended'" [class.bad]="t === 'Not Recommended'">{{ t }}</span>
+                  }
+                  @if (r.is_preliminary) {
+                    <span class="tag">Preliminary</span>
+                  }
+                  @if (progressLabel(r); as p) {
+                    <span class="faint small">{{ p }}</span>
+                  }
+                </div>
+
+                @if (r.is_spoiler && !revealed().has(r.mal_id)) {
+                  <button class="spoiler" type="button" (click)="reveal(r.mal_id)">Contains spoilers. Click to show.</button>
+                } @else {
+                  <p class="text">{{ reviewText(r) }}</p>
+                  <div class="own-actions">
+                    @if (r.review.trim().length > reviewClamp) {
+                      <button class="link" type="button" (click)="toggleReview(r.mal_id)">
+                        {{ expandedReviews().has(r.mal_id) ? 'Show less' : 'Read full review' }}
+                      </button>
+                    }
+                    @if (r.reactions?.overall) {
+                      <span class="faint small">{{ r.reactions!.overall }} found this helpful</span>
+                    }
+                    <a class="link small" [href]="r.url" target="_blank" rel="noopener">Open ↗</a>
+                  </div>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+        @if (reviewsHasMore()) {
+          <button class="btn btn-sm more" type="button" [disabled]="reviewsLoading()" (click)="moreReviews()">
+            {{ reviewsLoading() ? 'Loading…' : 'More reviews' }}
+          </button>
+        }
+      }
+      @if (malUrl()) {
+        <p class="source faint small">
+          Reviews from <a class="link" [href]="malUrl() + '/reviews'" target="_blank" rel="noopener">MyAnimeList</a>.
+        </p>
+      }
+    </div>
+  }
+</section>

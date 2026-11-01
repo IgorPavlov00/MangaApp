@@ -17,6 +17,7 @@ Catalogue data comes live from MyAnimeList through the [Jikan API](https://jikan
 - **🔍 Browse & search**: full-text search with genre, format, status and minimum-score filters, sorting and pagination. Every filter lives in the URL, so results are shareable.
 - **📚 Rich detail pages**: synopsis, stats, characters, related titles, trailers and community recommendations.
 - **📖 Personal library**: save manga and anime with a status (reading, planning, completed, …), your own 1–10 score, chapter/episode progress and favourites.
+- **💬 Reviews & comments**: read MyAnimeList user reviews for every title (with spoiler hiding), and post, edit or delete your own comments that other readers can see.
 - **🎯 Personalised recommendations**: the API ranks titles recommended alongside your favourites, weighted by how much you liked each one.
 - **🔐 Accounts**: sign-up with email confirmation, sign-in, password reset and profile settings, powered by Supabase Auth.
 - **📱 Responsive**: designed for phones up to wide desktops, keyboard-accessible.
@@ -65,6 +66,10 @@ Catalogue data comes live from MyAnimeList through the [Jikan API](https://jikan
 | `GET`    | `/api/library/stats`                   | Counts per status and average score               |
 | `GET`    | `/api/recommendations?mediaType=`      | Personalised recommendations                      |
 | `GET`    | `/api/me`                              | Profile from the token plus stats                 |
+| `GET`    | `/api/comments/{manga\|anime}/{malId}` | A title's comments, newest first (public)         |
+| `POST`   | `/api/comments/{manga\|anime}/{malId}` | Post a comment                                    |
+| `PUT`    | `/api/comments/{id}`                   | Edit your own comment                             |
+| `DELETE` | `/api/comments/{id}`                   | Delete your own comment                           |
 
 Interactive docs: `http://localhost:8084/docs`.
 

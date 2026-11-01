@@ -11,6 +11,7 @@ import {
   NamedRef,
   Page,
   Recommendation,
+  Review,
   SearchParams,
   Single,
 } from './jikan.models';
@@ -111,6 +112,35 @@ export class AniListService {
             },
             votes: Math.max(n.rating, 0),
           })),
+      })),
+    );
+  }
+
+  /** AniList reviews have no MAL id; they get negative ids like other AniList-only records. */
+  reviews(kind: MediaKind, malId: number, page: number): Observable<Page<Review>> {
+    return this.query<{ Media: { reviews: { pageInfo: AlPageInfo; nodes: AlReview[] } } }>(REVIEWS_QUERY, {
+      idMal: malId,
+      type: type(kind),
+      page,
+    }).pipe(
+      map(({ Media: { reviews } }) => ({
+        data: reviews.nodes.map((r) => ({
+          mal_id: -r.id,
+          url: r.siteUrl,
+          date: new Date(r.createdAt * 1000).toISOString(),
+          review: cleanMarkdown(r.body) ?? r.summary,
+          score: r.score ? Math.round(r.score / 10) : null,
+          tags: [],
+          is_spoiler: false,
+          is_preliminary: false,
+          reactions: { overall: Math.max(r.rating, 0) },
+          user: { username: r.user.name, url: r.user.siteUrl, images: { jpg: { image_url: r.user.avatar?.medium ?? '' } } },
+        })),
+        pagination: {
+          last_visible_page: reviews.pageInfo.lastPage,
+          has_next_page: reviews.pageInfo.hasNextPage,
+          current_page: reviews.pageInfo.currentPage,
+        },
       })),
     );
   }
@@ -462,6 +492,16 @@ query ($idMal: Int, $type: MediaType) {
   }
 }`;
 
+const REVIEWS_QUERY = `
+query ($idMal: Int, $type: MediaType, $page: Int) {
+  Media(idMal: $idMal, type: $type) {
+    reviews(sort: [RATING_DESC], page: $page, perPage: 10) {
+      pageInfo { total perPage currentPage lastPage hasNextPage }
+      nodes { id summary body(asHtml: false) score rating createdAt siteUrl user { name siteUrl avatar { medium } } }
+    }
+  }
+}`;
+
 const CHARACTER_QUERY = `
 query ($id: Int) {
   Character(id: $id) {
@@ -534,6 +574,17 @@ interface AlRecommendation {
     title: { romaji: string; english: string | null };
     coverImage: { extraLarge: string | null; large: string | null };
   } | null;
+}
+
+interface AlReview {
+  id: number;
+  summary: string;
+  body: string | null;
+  score: number | null;
+  rating: number;
+  createdAt: number;
+  siteUrl: string;
+  user: { name: string; siteUrl: string; avatar: { medium: string | null } | null };
 }
 
 interface AlCharacter {

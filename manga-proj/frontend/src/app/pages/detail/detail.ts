@@ -9,6 +9,7 @@ import { CharacterRole, Media, MediaKind, Recommendation, coverUrl, displayTitle
 import { Icon } from '../../shared/icon';
 import { MediaCard } from '../../shared/media-card';
 import { MediaRow } from '../../shared/media-row';
+import { Discussion } from './discussion';
 import { LibraryPanel } from './library-panel';
 
 interface InfoRow {
@@ -18,7 +19,7 @@ interface InfoRow {
 
 @Component({
   selector: 'app-detail',
-  imports: [RouterLink, DecimalPipe, Icon, MediaCard, MediaRow, LibraryPanel],
+  imports: [RouterLink, DecimalPipe, Icon, MediaCard, MediaRow, LibraryPanel, Discussion],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './detail.html',
   styleUrl: './detail.scss',
