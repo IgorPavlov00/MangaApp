@@ -16,7 +16,8 @@ spring:
       # pointed at the same database counts too, so keep each instance small and release idle ones.
       maximum-pool-size: ${DATABASE_POOL_SIZE:4}
       minimum-idle: 1
-      idle-timeout: 60s
+      # Milliseconds: Hikari binds these as plain longs, not Durations.
+      idle-timeout: 60000
   jpa:
     open-in-view: false
     hibernate:
