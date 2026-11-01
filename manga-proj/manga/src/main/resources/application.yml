@@ -12,7 +12,11 @@ spring:
     password: ${DATABASE_PASSWORD:animan}
     hikari:
       # Supabase's session pooler (and the free tier) have tight connection limits.
-      maximum-pool-size: ${DATABASE_POOL_SIZE:5}
+      # During a Render deploy the old and new instances run side by side, and a local dev server
+      # pointed at the same database counts too, so keep each instance small and release idle ones.
+      maximum-pool-size: ${DATABASE_POOL_SIZE:4}
+      minimum-idle: 1
+      idle-timeout: 60s
   jpa:
     open-in-view: false
     hibernate:
