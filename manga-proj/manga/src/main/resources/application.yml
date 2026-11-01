@@ -18,6 +18,10 @@ spring:
       minimum-idle: 1
       # Milliseconds: Hikari binds these as plain longs, not Durations.
       idle-timeout: 60000
+      data-source-properties:
+        # Supabase's transaction pooler (port 6543) hands each transaction a different server
+        # connection, so server-side prepared statements can't be reused. Harmless elsewhere.
+        prepareThreshold: 0
   jpa:
     open-in-view: false
     hibernate:
